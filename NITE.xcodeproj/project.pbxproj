@@ -39,10 +39,12 @@
 		9F86D7AD280BE9C10092E98B /* GenderPrefSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D7AC280BE9C10092E98B /* GenderPrefSelectionViewController.swift */; };
 		9F86D7B0280BE9DD0092E98B /* GenderIdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D7AF280BE9DD0092E98B /* GenderIdentityViewController.swift */; };
 		9F86D7B2280BE9F00092E98B /* Utility.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F86D7B1280BE9F00092E98B /* Utility.storyboard */; };
+		9F86D7B4280D3FE80092E98B /* AvatarServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D7B3280D3FE80092E98B /* AvatarServices.swift */; };
 		9FE4D674280A588900C0E9D3 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE4D673280A588900C0E9D3 /* Models.swift */; };
 		9FE4D676280B300A00C0E9D3 /* UIColor+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE4D675280B300A00C0E9D3 /* UIColor+EXT.swift */; };
 		9FE4D679280B326300C0E9D3 /* cardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE4D678280B326300C0E9D3 /* cardView.swift */; };
 		9FE4D67B280B32AD00C0E9D3 /* cardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FE4D67A280B32AD00C0E9D3 /* cardView.xib */; };
+		9FF65DC02819CA9E00BDC586 /* snapchatServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF65DBF2819CA9E00BDC586 /* snapchatServices.swift */; };
 		CCB2390DEE22E19816CC2534 /* Pods_NITETests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E12A2EC7BDC5AAE51AA9FA7 /* Pods_NITETests.framework */; };
 /* End PBXBuildFile section */
 
@@ -104,10 +106,12 @@
 		9F86D7AC280BE9C10092E98B /* GenderPrefSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GenderPrefSelectionViewController.swift; path = ../GenderPrefSelectionViewController.swift; sourceTree = "<group>"; };
 		9F86D7AF280BE9DD0092E98B /* GenderIdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderIdentityViewController.swift; sourceTree = "<group>"; };
 		9F86D7B1280BE9F00092E98B /* Utility.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Utility.storyboard; sourceTree = "<group>"; };
+		9F86D7B3280D3FE80092E98B /* AvatarServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarServices.swift; sourceTree = "<group>"; };
 		9FE4D673280A588900C0E9D3 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		9FE4D675280B300A00C0E9D3 /* UIColor+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+EXT.swift"; sourceTree = "<group>"; };
 		9FE4D678280B326300C0E9D3 /* cardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cardView.swift; sourceTree = "<group>"; };
 		9FE4D67A280B32AD00C0E9D3 /* cardView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = cardView.xib; sourceTree = "<group>"; };
+		9FF65DBF2819CA9E00BDC586 /* snapchatServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snapchatServices.swift; sourceTree = "<group>"; };
 		B814E09B2D6EA434B00F80A1 /* Pods-NITETests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NITETests.release.xcconfig"; path = "Target Support Files/Pods-NITETests/Pods-NITETests.release.xcconfig"; sourceTree = "<group>"; };
 		F56A682F51183A03062DF14B /* Pods-NITE-NITEUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NITE-NITEUITests.debug.xcconfig"; path = "Target Support Files/Pods-NITE-NITEUITests/Pods-NITE-NITEUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FF1BDE2F3DC26479267C5398 /* Pods-NITETests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NITETests.debug.xcconfig"; path = "Target Support Files/Pods-NITETests/Pods-NITETests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -176,7 +180,7 @@
 		9F6281722805289300E40316 /* NITE */ = {
 			isa = PBXGroup;
 			children = (
-				9F6281B428053E5000E40316 /* Servies */,
+				9F6281B428053E5000E40316 /* Services */,
 				9F6281A7280533A700E40316 /* Support */,
 				9F6281A62805295F00E40316 /* Extensions */,
 				9F6281A52805295600E40316 /* Application */,
@@ -274,13 +278,15 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		9F6281B428053E5000E40316 /* Servies */ = {
+		9F6281B428053E5000E40316 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				9F6281B528053E6F00E40316 /* CardViewServices.swift */,
 				9F3AC431280B944A001FEDFB /* FirebaseServices.swift */,
+				9F86D7B3280D3FE80092E98B /* AvatarServices.swift */,
+				9FF65DBF2819CA9E00BDC586 /* snapchatServices.swift */,
 			);
-			path = Servies;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		9F86D7A3280BD8C30092E98B /* Profile Update View */ = {
@@ -586,6 +592,8 @@
 				9FE4D674280A588900C0E9D3 /* Models.swift in Sources */,
 				9F86D7B0280BE9DD0092E98B /* GenderIdentityViewController.swift in Sources */,
 				9F86D7AD280BE9C10092E98B /* GenderPrefSelectionViewController.swift in Sources */,
+				9FF65DC02819CA9E00BDC586 /* snapchatServices.swift in Sources */,
+				9F86D7B4280D3FE80092E98B /* AvatarServices.swift in Sources */,
 				9F86D7A6280BE4210092E98B /* addImagesTableViewCell.swift in Sources */,
 				9FE4D679280B326300C0E9D3 /* cardView.swift in Sources */,
 				9F3AC434280B987E001FEDFB /* ErrorStatus.swift in Sources */,

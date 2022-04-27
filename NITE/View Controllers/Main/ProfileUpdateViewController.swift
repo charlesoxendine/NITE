@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import SCSDKLoginKit
 
 struct profileUpdateData {
     var avatarImage: UIImage?
@@ -37,6 +38,7 @@ class ProfileUpdateViewController: UIViewController {
     var footerView: singleButtonFooterView?
     
     var newData: profileUpdateData?
+    var newImages: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +95,13 @@ class ProfileUpdateViewController: UIViewController {
         profileButton.configuration = configuration
         profileButton.addTarget(self, action: #selector(self.backAction), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileButton)
+        
+        let avatarEditButton = UIButton(type: .custom)
+        let avatarIcon = UIImage(systemName: "person")!
+        configuration.image = avatarIcon
+        avatarEditButton.configuration = configuration
+        avatarEditButton.addTarget(self, action: #selector(self.avatarEditAction), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: avatarEditButton)
     }
     
     func setExistingData(index: Int, cell: FieldEntryTableViewCell) {
@@ -109,6 +118,12 @@ class ProfileUpdateViewController: UIViewController {
             cell.textField.text = GenderPreference(rawValue: self.newData?.genderPreferences ?? 0)?.getGenderPreferenceName()
         default:
             print("Fatal Error")
+        }
+    }
+    
+    @objc func avatarEditAction() {
+        SCSDKLoginClient.login(from: self) { (success : Bool, error : Error?) in
+            // Do something
         }
     }
     
@@ -225,7 +240,7 @@ extension ProfileUpdateViewController: singleButtonFooterViewDelegate {
             return
         }
         
-        FirebaseServices.shared.updateDataBaseUserProfile(_withUID: uid, updatedProfileData: originalUserProfile!) { error in
+        FirebaseServices.shared.updateDataBaseUserProfile(_withUID: uid, newProfileImages: nil, updatedProfileData: originalUserProfile!) { error in
             if let error = error {
                 self.showErrorMessage(message: error.errorMsg)
                 self.removeLoadingIndicator()
@@ -245,7 +260,7 @@ extension ProfileUpdateViewController: addImagesTableViewCellDelegate {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.allowsEditing = true
-        pickerController.mediaTypes = ["public.image", "public.movie"]
+        pickerController.mediaTypes = ["public.image"]
         pickerController.sourceType = .photoLibrary
         self.present(pickerController, animated: true)
     }
@@ -254,9 +269,13 @@ extension ProfileUpdateViewController: addImagesTableViewCellDelegate {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         guard let image = image else {
+            if self.newData?.profilePictures == nil {
+                self.newData?.profilePictures = []
+            }
+            
             self.newData?.profilePictures?.append(image!)
             let index = IndexPath(row: ProfileFields.imagesField.rawValue, section: 0)
-            self.tableView.reloadRows(at: [index], with: .fade)
+            self.tableView.reloadRows(at: [index], with: .fade) 
             return
         }
     
@@ -285,6 +304,7 @@ extension ProfileUpdateViewController: UINavigationControllerDelegate, UIImagePi
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.editedImage] as? UIImage {
             picker.dismiss(animated: true)
+            
             if newData?.profilePictures == nil {
                 newData?.profilePictures = []
             }
