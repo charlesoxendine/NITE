@@ -8,6 +8,7 @@
 import UIKit
 import Shuffle_iOS
 import FirebaseAuth
+import FirebaseFirestoreSwift
 
 class MainViewController: UIViewController {
 
@@ -136,18 +137,26 @@ extension MainViewController: SwipeCardStackDataSource, SwipeCardStackDelegate {
     func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
         let userData = cardData[index]
         
-        if direction == .left {
-            FirebaseServices.shared.logLikeData(likedUserUID: userData.id) { errorStatus in
-                if errorStatus != nil {
-                    self.showErrorMessage(message: errorStatus!.errorMsg)
-                    return
-                }
+        FirebaseServices.shared.logSeen(seenUID: userData.id) { error in
+            if let error = error {
+                self.showErrorMessage(message: error.errorMsg)
+                return
+                
             }
-        } else {
-            FirebaseServices.shared.logDislike(dislikedUserUID: userData.id) { errorStatus in
-                if errorStatus != nil {
-                    self.showErrorMessage(message: errorStatus!.errorMsg)
-                    return
+            
+            if direction == .left {
+                FirebaseServices.shared.logDislike(dislikedUserUID: userData.id) { errorStatus in
+                    if errorStatus != nil {
+                        self.showErrorMessage(message: errorStatus!.errorMsg)
+                        return
+                    }
+                }
+            } else {
+                FirebaseServices.shared.logLikeData(likedUserUID: userData.id) { errorStatus in
+                    if errorStatus != nil {
+                        self.showErrorMessage(message: errorStatus!.errorMsg)
+                        return
+                    }
                 }
             }
         }

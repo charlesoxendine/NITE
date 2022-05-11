@@ -295,21 +295,38 @@ class FirebaseServices {
         }
     }
     
-    func logSeen(seenUID: String) {
-        guard var updatedUserObj = self.currentUserProfile,
-              let uid = Auth.auth().currentUser?.uid else {
+    func logSeen(seenUID: String, completion: @escaping (ErrorStatus?) -> ()) {
+        guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
         
-        if updatedUserObj.seenAccounts != nil {
-            updatedUserObj.seenAccounts?.append(seenUID)
-        } else {
-            updatedUserObj.seenAccounts = [seenUID]
+        let seenProfileIDsRef = USER_COLLECTION.document(uid).collection("seen_profile_ids")
+        seenProfileIDsRef.document(seenUID).setData([:], completion: { err in
+            if let err = err {
+                completion(ErrorStatus(errorMsg: err.localizedDescription, errorMessageType: .none))
+                return
+            }
+            
+            completion(nil)
+        })
+    }
+    
+    func checkIfSeen(seenUID: String, completion: @escaping (ErrorStatus?, Bool?) -> ()) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
         }
         
-        self.updateDataBaseUserProfile(_withUID: uid, newProfileImages: [], updatedProfileData: updatedUserObj, deletedImagesURLS: []) { error in
-            if error != nil {
-                
+        let seenProfileIDsRef = USER_COLLECTION.document(uid).collection("seen_profile_ids")
+        seenProfileIDsRef.document(seenUID).getDocument { doc, error in
+            if let error = error {
+                completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none), nil)
+                return
+            }
+            
+            if let doc = doc, doc.exists {
+                completion(nil, true)
+            } else {
+                completion(nil, false)
             }
         }
     }
@@ -345,7 +362,10 @@ class FirebaseServices {
             
             var newProfiles: [PublicUserProfile] = []
             
+            let group = DispatchGroup()
+            
             for document in snap!.documents {
+                group.enter()
                 let result = Result {
                     try document.data(as: PublicUserProfile.self)
                 }
@@ -353,13 +373,30 @@ class FirebaseServices {
                 switch result {
                 case .success(let profile):
                     print("Profile: \(profile.fullName())")
-                    newProfiles.append(profile)
+                    self.checkIfSeen(seenUID: profile.id) { errorStatus, seen in
+                        if let errorStatus = errorStatus {
+                            print("[getNextFiveProfiles] WARNING: \(errorStatus.errorMsg ?? "")")
+                            // IGNORING THIS ERROR FOR NOW
+                            // TODO: Put performance notif here of failure
+                        }
+                        
+                        if seen == true {
+                            print("Seen Profile")
+                            group.leave()
+                        } else {
+                            newProfiles.append(profile)
+                            group.leave()
+                        }
+                    }
                 case .failure(let error):
                     print("Error decoding company: \(error)")
+                    group.leave()
                 }
             }
             
-            completion(nil, newProfiles)
+            group.notify(queue: .main) {
+                completion(nil, newProfiles)
+            }
         }
     }
 }

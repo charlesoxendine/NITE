@@ -22,7 +22,6 @@ struct PublicUserProfile: Codable {
     var long: Float?
     var genderIdentity: GenderIdentity?
     var genderPreference: GenderPreference?
-    var seenAccounts: [String]?
     var approvedToShow: Bool?
     
     func fullName() -> String {
@@ -42,7 +41,6 @@ struct PublicUserProfile: Codable {
         case long
         case genderIdentity
         case genderPreference
-        case seenAccounts
         case approvedToShow
     }
 }
@@ -78,6 +76,16 @@ struct DislikeData: Codable {
         case dislikedUserUID
         case dislikingUserUID
         case date
+    }
+}
+
+struct profileView: Codable {
+    var profileViewedUID: String!
+    var viewDate: Timestamp!
+    
+    enum CodingKeys: String, CodingKey {
+        case profileViewedUID
+        case viewDate
     }
 }
 
