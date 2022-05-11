@@ -11,7 +11,7 @@ import SCSDKLoginKit
 
 struct profileUpdateData {
     var avatarImage: UIImage?
-    var profilePictures: [UIImage]?
+    var profilePictures: [taggedImageObject]?
     var firstName: String?
     var lastName: String?
     var description: String?
@@ -39,6 +39,7 @@ class ProfileUpdateViewController: UIViewController {
     
     var newData: profileUpdateData?
     var newImages: [UIImage] = []
+    var deletedURLs: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +58,7 @@ class ProfileUpdateViewController: UIViewController {
         
         setHeader()
         setExistingProfileData()
+        setCurrentStoredUserProfiles()
     }
     
     func setExistingProfileData() {
@@ -67,6 +69,23 @@ class ProfileUpdateViewController: UIViewController {
         let data = profileUpdateData(avatarImage: nil, profilePictures: nil, firstName: user.firstName, lastName: user.lastName, description: user.description, genderIdentity: user.genderIdentity?.rawValue, genderPreferences: user.genderPreference?.rawValue)
         self.newData = data
         self.tableView.reloadData()
+    }
+    
+    func setCurrentStoredUserProfiles() {
+        if let uid = Auth.auth().currentUser?.uid {
+            FirebaseServices.shared.getUserProfileImages(_withUID: uid, _withImageIDs: FirebaseServices.shared.getCurrentUserProfile()?.imageLocations ?? []) { error, images in
+                var profileImages: [taggedImageObject] = images ?? []
+                if let avatarURL = URL(string: FirebaseServices.shared.getCurrentUserProfile()?.avatarImageLocation ?? "") {
+                    let data = try? Data(contentsOf: avatarURL) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+                    let avatarImage = UIImage(data: data!)
+                    let taggedIMG = taggedImageObject(url: avatarURL.absoluteString, image: avatarImage)
+                    profileImages.insert(taggedIMG, at: 0)
+                }
+                
+                self.newData?.profilePictures = profileImages
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func setHeader() {
@@ -122,8 +141,32 @@ class ProfileUpdateViewController: UIViewController {
     }
     
     @objc func avatarEditAction() {
-        SCSDKLoginClient.login(from: self) { (success : Bool, error : Error?) in
-            // Do something
+        if SCSDKLoginClient.isUserLoggedIn == true {
+            snapchatServices.shared.getUpdatedBitmojiAvatarURL { url in
+                if let avatarURL = url {
+                    if var newUser = FirebaseServices.shared.getCurrentUserProfile() {
+                        newUser.avatarImageLocation = avatarURL.absoluteString
+                        
+                        FirebaseServices.shared.updateDataBaseUserProfile(_withUID: Auth.auth().currentUser?.uid ?? "", newProfileImages: [], updatedProfileData: newUser, deletedImagesURLS: []) { error in
+                            print("Successful update of avatar url")
+                        }
+                    }
+                }
+            }
+        } else {
+            SCSDKLoginClient.login(from: self) { (success : Bool, error : Error?) in
+                snapchatServices.shared.getUpdatedBitmojiAvatarURL { url in
+                    if let avatarURL = url {
+                        if var newUser = FirebaseServices.shared.getCurrentUserProfile() {
+                            newUser.avatarImageLocation = avatarURL.absoluteString
+                            
+                            FirebaseServices.shared.updateDataBaseUserProfile(_withUID: Auth.auth().currentUser?.uid ?? "", newProfileImages: [], updatedProfileData: newUser, deletedImagesURLS: []) { error in
+                                print("Successful update of avatar url")
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -166,7 +209,7 @@ extension ProfileUpdateViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == ProfileFields.imagesField.rawValue {
-            return 160
+            return 300
         }
         
         return 70
@@ -190,14 +233,14 @@ extension ProfileUpdateViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField.tag {
         case ProfileFields.genderIdentity.rawValue:
-            textField.resignFirstResponder()
+            textField.endEditing(true)
             let storyboard = UIStoryboard(name: "Utility", bundle: nil)
             if let newVC = storyboard.instantiateViewController(withIdentifier: "GenderIdentityViewController") as? GenderIdentityViewController {
                 newVC.delegate = self
                 self.navigationController?.pushViewController(newVC, animated: true)
             }
         case ProfileFields.genderPreferences.rawValue:
-            textField.resignFirstResponder()
+            textField.endEditing(true)
             let storyboard = UIStoryboard(name: "Utility", bundle: nil)
             if let newVC = storyboard.instantiateViewController(withIdentifier: "GenderPrefSelectionViewController") as? GenderPrefSelectionViewController {
                 newVC.delegate = self
@@ -240,7 +283,20 @@ extension ProfileUpdateViewController: singleButtonFooterViewDelegate {
             return
         }
         
-        FirebaseServices.shared.updateDataBaseUserProfile(_withUID: uid, newProfileImages: nil, updatedProfileData: originalUserProfile!) { error in
+        var taggedImageObjects: [taggedImageObject] = []
+        for imageObj in newImages {
+            let taggedObj = taggedImageObject(image: imageObj)
+            taggedImageObjects.append(taggedObj)
+        }
+        
+        self.newData?.profilePictures = taggedImageObjects
+        
+        var newProfileImages: [UIImage] = []
+        for image in self.newData?.profilePictures ?? [] {
+            newProfileImages.append(image.image)
+        }
+        
+        FirebaseServices.shared.updateDataBaseUserProfile(_withUID: uid, newProfileImages: newProfileImages, updatedProfileData: originalUserProfile!, deletedImagesURLS: self.deletedURLs) { error in
             if let error = error {
                 self.showErrorMessage(message: error.errorMsg)
                 self.removeLoadingIndicator()
@@ -259,21 +315,22 @@ extension ProfileUpdateViewController: addImagesTableViewCellDelegate {
     func didTapAddImageCell() {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
-        pickerController.allowsEditing = true
+        pickerController.allowsEditing = false
         pickerController.mediaTypes = ["public.image"]
         pickerController.sourceType = .photoLibrary
         self.present(pickerController, animated: true)
     }
     
-    func didTapImageCell(image: UIImage?) {
+    func didTapImageCell(image: taggedImageObject?) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        guard let image = image else {
+        guard image != nil else {
             if self.newData?.profilePictures == nil {
                 self.newData?.profilePictures = []
             }
             
-            self.newData?.profilePictures?.append(image!)
+            let taggedObj = taggedImageObject(image: image?.image!)
+            self.newData?.profilePictures?.append(taggedObj)
             let index = IndexPath(row: ProfileFields.imagesField.rawValue, section: 0)
             self.tableView.reloadRows(at: [index], with: .fade) 
             return
@@ -281,6 +338,9 @@ extension ProfileUpdateViewController: addImagesTableViewCellDelegate {
     
         let deleteAction = UIAlertAction(title: "Delete Image", style: .destructive) { (action) in
             // DELETE
+            self.newData?.profilePictures?.removeAll(where: { $0.url == image?.url })
+            self.deletedURLs.append(image?.url ?? "")
+            self.tableView.reloadData()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
@@ -302,14 +362,17 @@ extension ProfileUpdateViewController: UINavigationControllerDelegate, UIImagePi
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.editedImage] as? UIImage {
+        if let image = info[.originalImage] as? UIImage {
             picker.dismiss(animated: true)
             
             if newData?.profilePictures == nil {
                 newData?.profilePictures = []
             }
             
-            self.newData?.profilePictures!.append(image)
+            let taggedObj = taggedImageObject(image: image)
+            
+            self.newData?.profilePictures!.append(taggedObj)
+            self.newImages.append(image)
             let indexPath = IndexPath(item: 0, section: 0)
             tableView.reloadRows(at: [indexPath], with: .none)
         }
@@ -317,7 +380,7 @@ extension ProfileUpdateViewController: UINavigationControllerDelegate, UIImagePi
 }
 
 extension ProfileUpdateViewController: GenderIdentityViewControllerDelegate {
-    func didSelect(gender: GenderIdentityButtons) {
+    func didSelect(gender: GenderIdentity) {
         self.newData?.genderIdentity = gender.rawValue
         let indexPath = IndexPath(row: ProfileFields.genderIdentity.rawValue, section: 0)
         tableView.reloadRows(at: [indexPath], with: .fade)

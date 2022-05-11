@@ -7,12 +7,16 @@
 
 import UIKit
 import Shuffle_iOS
+import FirebaseAuth
 
 class MainViewController: UIViewController {
 
     @IBOutlet weak var cardStack: SwipeCardStack!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dislikeButton: UIButton!
+    
+    var cardData: [PublicUserProfile] = []
+    var nextUpCardData: [PublicUserProfile] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +25,7 @@ class MainViewController: UIViewController {
         
         cardStack.dataSource = self
         cardStack.delegate = self
+        getData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -43,6 +48,22 @@ class MainViewController: UIViewController {
         
         dislikeButton.setBackgroundImage(UIImage(systemName: "arrow.left.circle.fill")!, for: .normal)
         dislikeButton.tintColor = .systemRed
+    }
+    
+    func getData() {
+        FirebaseServices.shared.getNextFiveProfiles { error, profileData in
+            if let error = error {
+                self.showErrorMessage(message: error.errorMsg)
+                return
+            }
+            
+            guard let profileData = profileData else {
+                return
+            }
+
+            self.cardData = profileData
+            self.cardStack.reloadData()
+        }
     }
     
     func addShadowTo(_view view: UIView) {
@@ -95,29 +116,40 @@ class MainViewController: UIViewController {
     }
     
     @objc private func matchesAction() -> Void {
-       // Navigate to user matches
+        try? Auth.auth().signOut()
+        print("Logged out")
     }
     
 }
 
 extension MainViewController: SwipeCardStackDataSource, SwipeCardStackDelegate {
     func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
-        let testCardProfile = PublicUserProfile(id: "", firstName: "Jenna", lastName: "Lire", description: "I am a big outdoorsy person. Come on a hike with me!! :)", imageLocations: [], avatarImageLocation: "", interests: [])
-        let testCard = CardViewServices.createCard(_withProfile: testCardProfile, cardStack: self.cardStack)
+        let userData = cardData[index]
+        let testCard = CardViewServices.createCard(_withProfile: userData, cardStack: self.cardStack)
         return testCard
     }
     
     func numberOfCards(in cardStack: SwipeCardStack) -> Int {
-        return 1
+        return self.cardData.count
     }
     
     func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
+        let userData = cardData[index]
+        
         if direction == .left {
-            // Like
-            // Log in likes and seen
+            FirebaseServices.shared.logLikeData(likedUserUID: userData.id) { errorStatus in
+                if errorStatus != nil {
+                    self.showErrorMessage(message: errorStatus!.errorMsg)
+                    return
+                }
+            }
         } else {
-            // Dislike
-            // Logged as seen
+            FirebaseServices.shared.logDislike(dislikedUserUID: userData.id) { errorStatus in
+                if errorStatus != nil {
+                    self.showErrorMessage(message: errorStatus!.errorMsg)
+                    return
+                }
+            }
         }
     }
 }

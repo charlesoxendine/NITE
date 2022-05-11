@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 struct PublicUserProfile: Codable {
     var id: String!
@@ -20,7 +21,9 @@ struct PublicUserProfile: Codable {
     var lat: Float?
     var long: Float?
     var genderIdentity: GenderIdentity?
-    var genderPreference: GenderPreference? 
+    var genderPreference: GenderPreference?
+    var seenAccounts: [String]?
+    var approvedToShow: Bool?
     
     func fullName() -> String {
         return "\(firstName ?? "") \(lastName ?? "")"
@@ -39,6 +42,8 @@ struct PublicUserProfile: Codable {
         case long
         case genderIdentity
         case genderPreference
+        case seenAccounts
+        case approvedToShow
     }
 }
 
@@ -49,6 +54,30 @@ struct Interest: Codable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
+    }
+}
+
+struct LikeData: Codable {
+    var likedUserUID: String!
+    var likingUserUID: String!
+    var date: Timestamp!
+    
+    enum CodingKeys: String, CodingKey {
+        case likedUserUID
+        case likingUserUID
+        case date
+    }
+}
+
+struct DislikeData: Codable {
+    var dislikedUserUID: String!
+    var dislikingUserUID: String!
+    var date: Timestamp!
+    
+    enum CodingKeys: String, CodingKey {
+        case dislikedUserUID
+        case dislikingUserUID
+        case date
     }
 }
 
@@ -93,4 +122,9 @@ enum GenderIdentity: Int, Codable {
             fatalError("Out of range of available Gender Identity options")
         }
     }
+}
+
+struct taggedImageObject {
+    var url: String?
+    var image: UIImage!
 }

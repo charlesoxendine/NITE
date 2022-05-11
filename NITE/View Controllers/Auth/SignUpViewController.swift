@@ -55,6 +55,10 @@ class SignUpViewController: UIViewController {
             tableView.register(UINib.init(nibName: $0, bundle: nil), forCellReuseIdentifier: $0)
         })
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        
         setUI()
     }
     
@@ -64,6 +68,17 @@ class SignUpViewController: UIViewController {
     
     @IBAction func cancelTapped(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        }
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        tableView.contentInset = .zero
     }
     
 }
@@ -84,7 +99,35 @@ extension SignUpViewController: UITableViewDelegate, UITableViewDataSource {
             } else {
                 cell.textField.isSecureTextEntry = false
             }
-                
+            
+            if indexPath.row == SignupField.genderPreference.rawValue {
+                switch self.newData.genderPreference {
+                case .male:
+                    cell.textField.text = "Men"
+                case .female:
+                    cell.textField.text = "Women"
+                case .maleFemale:
+                    cell.textField.text = "Women & Men"
+                case .everyone:
+                    cell.textField.text = "Everyone"
+                default:
+                    cell.textField.text = ""
+                }
+            }
+            
+            if indexPath.row == SignupField.genderIdentity.rawValue {
+                switch self.newData.genderIdentity {
+                case .male:
+                    cell.textField.text = "Male"
+                case .female:
+                    cell.textField.text = "Female"
+                case .other:
+                    cell.textField.text = "Other"
+                default:
+                    cell.textField.text = ""
+                }
+            }
+            
             cell.textField.delegate = self
             cell.textField.tag = indexPath.row
             
@@ -113,9 +156,9 @@ extension SignUpViewController: UITextFieldDelegate {
         case SignupField.email.rawValue:
             newData.email = textField.text
         case SignupField.genderIdentity.rawValue:
-            newData.genderIdentity = GenderIdentity(rawValue: Int(textField.text ?? "")!)
+            newData.genderIdentity = GenderIdentity(rawValue: Int(textField.text ?? "") ?? 0)
         case SignupField.genderPreference.rawValue:
-            newData.genderPreference = GenderPreference(rawValue: Int(textField.text ?? "")!)
+            newData.genderPreference = GenderPreference(rawValue: Int(textField.text ?? "") ?? 0)
         case SignupField.password.rawValue:
             newData.password = textField.text
         case SignupField.confirmPassword.rawValue:
@@ -125,17 +168,29 @@ extension SignUpViewController: UITextFieldDelegate {
         }
     }
     
-    /*func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField.tag {
-        case SignupField.genderPreference.rawValue:
-            textField.resignFirstResponder()
         case SignupField.genderIdentity.rawValue:
             textField.resignFirstResponder()
+            let storyboard = UIStoryboard(name: "Utility", bundle: nil)
+            if let newVC = storyboard.instantiateViewController(withIdentifier: "GenderIdentityViewController") as? GenderIdentityViewController {
+                newVC.delegate = self
+                newVC.fromSignUp = true
+                self.navigationController?.pushViewController(newVC, animated: true)
+            }
+        case SignupField.genderPreference.rawValue:
+            textField.resignFirstResponder()
+            let storyboard = UIStoryboard(name: "Utility", bundle: nil)
+            if let newVC = storyboard.instantiateViewController(withIdentifier: "GenderPrefSelectionViewController") as? GenderPrefSelectionViewController {
+                newVC.delegate = self
+                newVC.fromSignUp = true
+                self.navigationController?.pushViewController(newVC, animated: true)
+            }
         default:
             return
         }
     }
-    */
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -183,4 +238,20 @@ extension SignUpViewController: singleButtonFooterViewDelegate {
         }
     }
     
+}
+
+extension SignUpViewController: GenderIdentityViewControllerDelegate {
+    func didSelect(gender: GenderIdentity) {
+        self.newData.genderIdentity = gender
+        let indexPath = IndexPath(row: SignupField.genderIdentity.rawValue, section: 0)
+        tableView.reloadRows(at: [indexPath], with: .fade)
+    }
+}
+
+extension SignUpViewController: GenderPrefSelectionViewControllerDelegate {
+    func didSelect(gender: Int) {
+        self.newData.genderPreference = GenderPreference(rawValue: gender)
+        let indexPath = IndexPath(row: SignupField.genderPreference.rawValue, section: 0)
+        tableView.reloadRows(at: [indexPath], with: .fade)
+    }
 }

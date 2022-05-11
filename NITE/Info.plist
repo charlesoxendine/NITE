@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>itms-apps</string>
@@ -11,22 +13,23 @@
 	<key>SCSDKScopes</key>
 	<array>
 		<string>https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar</string>
+		<string>https://auth.snapchat.com/oauth2/api/user.display_name</string>
 	</array>
 	<key>SCSDKRedirectUrl</key>
 	<string>NITE://snap-kit/oauth2</string>
 	<key>SCSDKClientId</key>
-	<string>058c5e3c-651b-4e25-9577-1011256782db</string>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>NITE</string>
-            </array>
-        </dict>
-    </array>
+	<string>6e5663d1-e124-43f9-8d0f-e1921ef43d36</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>NITE</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

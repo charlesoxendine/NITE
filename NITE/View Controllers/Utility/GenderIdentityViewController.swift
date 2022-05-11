@@ -8,13 +8,7 @@
 import UIKit
 
 protocol GenderIdentityViewControllerDelegate {
-    func didSelect(gender: GenderIdentityButtons)
-}
-
-enum GenderIdentityButtons: Int {
-    case Male
-    case Female
-    case Other
+    func didSelect(gender: GenderIdentity)
 }
 
 class GenderIdentityViewController: UIViewController {
@@ -22,6 +16,7 @@ class GenderIdentityViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var delegate: GenderIdentityViewControllerDelegate?
+    var fromSignUp: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +27,18 @@ class GenderIdentityViewController: UIViewController {
         setHeader()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        if fromSignUp == true {
+            super.viewWillDisappear(animated)
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+    }
+    
     func setHeader() {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithTransparentBackground()
@@ -63,6 +70,16 @@ class GenderIdentityViewController: UIViewController {
     @objc func backAction() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        }
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        tableView.contentInset = .zero
+    }
 }
 
 extension GenderIdentityViewController: UITableViewDelegate, UITableViewDataSource {
@@ -74,11 +91,11 @@ extension GenderIdentityViewController: UITableViewDelegate, UITableViewDataSour
         var cell = UITableViewCell(style: .default, reuseIdentifier: "id")
         
         switch indexPath.row {
-        case GenderIdentityButtons.Male.rawValue:
+        case GenderIdentity.male.rawValue:
             cell.textLabel?.text = "Male"
-        case GenderIdentityButtons.Female.rawValue:
+        case GenderIdentity.female.rawValue:
             cell.textLabel?.text = "Female"
-        case GenderIdentityButtons.Other.rawValue:
+        case GenderIdentity.other.rawValue:
             cell.textLabel?.text = "Other"
         default:
             print("Fatal Error")
@@ -92,7 +109,7 @@ extension GenderIdentityViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didSelect(gender: GenderIdentityButtons(rawValue: indexPath.row)!)
+        delegate?.didSelect(gender: GenderIdentity(rawValue: indexPath.row)!)
         self.navigationController?.popViewController(animated: true)
     }
 }

@@ -23,6 +23,7 @@ class GenderPrefSelectionViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var delegate: GenderPrefSelectionViewControllerDelegate?
+    var fromSignUp: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,18 @@ class GenderPrefSelectionViewController: UIViewController {
         tableView.dataSource = self
         
         setHeader()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        if fromSignUp == true {
+            super.viewWillDisappear(animated)
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
     }
     
     func setHeader() {

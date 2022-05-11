@@ -7,10 +7,11 @@
 
 import UIKit
 import CryptoKit
+import FirebaseAuth
 
 protocol addImagesTableViewCellDelegate {
     func didTapAddImageCell() // User wants to add new image
-    func didTapImageCell(image: UIImage?) // When a user taps to update an old image
+    func didTapImageCell(image: taggedImageObject?) // When a user taps to update an old image
 }
 
 class addImagesTableViewCell: UITableViewCell {
@@ -19,7 +20,7 @@ class addImagesTableViewCell: UITableViewCell {
     
     var delegate: addImagesTableViewCellDelegate?
     
-    var cellImages: [UIImage] = [] {
+    var cellImages: [taggedImageObject] = [] {
         didSet {
             collectionView.reloadData()
         }
@@ -37,7 +38,6 @@ class addImagesTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
 }
 
 extension addImagesTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -47,14 +47,14 @@ extension addImagesTableViewCell: UICollectionViewDataSource, UICollectionViewDe
         cell?.imageView.isHidden = false
         
         if indexPath.row < cellImages.count {
-            cell?.imageView.image = cellImages[indexPath.row]
+            cell?.imageView.image = cellImages[indexPath.row].image
         } else {
             if indexPath.row >= cellImages.count {
                 cell?.setAsAddButton()
                 return cell!
             }
             
-            cell?.image = cellImages[indexPath.row]
+            cell?.image = cellImages[indexPath.row].image
         }
         
         return cell!
@@ -74,6 +74,6 @@ extension addImagesTableViewCell: UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let collectionViewHeight = collectionView.bounds.height
-        return CGSize(width: collectionViewHeight, height: collectionViewHeight)
+        return CGSize(width: collectionViewHeight/1.7, height: collectionViewHeight)
     }
 }

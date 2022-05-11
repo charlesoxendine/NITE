@@ -47,5 +47,13 @@ class cardView: UIView {
         textBackground.layer.cornerRadius = 15
         nameLbl.text = cardProfile?.fullName()
         descriptionLbl.text = cardProfile?.description ?? ""
+        DispatchQueue.global().async {
+            if let url = URL(string: self.cardProfile?.avatarImageLocation ?? "") {
+                let data = try? Data(contentsOf: url)
+                DispatchQueue.main.async {
+                    self.profileImgView.image = UIImage(data: data!)
+                }
+            }
+        }
     }
 }
