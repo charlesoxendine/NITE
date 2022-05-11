@@ -27,6 +27,7 @@
 		9F6281B12805350900E40316 /* AuthSplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281B02805350900E40316 /* AuthSplashScreenViewController.swift */; };
 		9F6281B3280535E900E40316 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F6281B2280535E900E40316 /* GoogleService-Info.plist */; };
 		9F6281B628053E6F00E40316 /* CardViewServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281B528053E6F00E40316 /* CardViewServices.swift */; };
+		9F84228A282C221600A8D454 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F842289282C221600A8D454 /* SignInViewController.swift */; };
 		9F86D798280BB0E60092E98B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D797280BB0E60092E98B /* SignUpViewController.swift */; };
 		9F86D79B280BB9040092E98B /* FieldEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D799280BB9020092E98B /* FieldEntryTableViewCell.swift */; };
 		9F86D79C280BB9040092E98B /* FieldEntryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F86D79A280BB9040092E98B /* FieldEntryTableViewCell.xib */; };
@@ -95,6 +96,7 @@
 		9F6281B2280535E900E40316 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F6281B528053E6F00E40316 /* CardViewServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewServices.swift; sourceTree = "<group>"; };
 		9F72BF56858804B90B548FFD /* Pods-NITETests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NITETests.release.xcconfig"; path = "Target Support Files/Pods-NITETests/Pods-NITETests.release.xcconfig"; sourceTree = "<group>"; };
+		9F842289282C221600A8D454 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		9F86D797280BB0E60092E98B /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		9F86D799280BB9020092E98B /* FieldEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldEntryTableViewCell.swift; sourceTree = "<group>"; };
 		9F86D79A280BB9040092E98B /* FieldEntryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldEntryTableViewCell.xib; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			children = (
 				9F6281B02805350900E40316 /* AuthSplashScreenViewController.swift */,
 				9F86D797280BB0E60092E98B /* SignUpViewController.swift */,
+				9F842289282C221600A8D454 /* SignInViewController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				9F6281A9280533B700E40316 /* Utils.swift in Sources */,
 				9FE4D676280B300A00C0E9D3 /* UIColor+EXT.swift in Sources */,
 				9F6281AB2805340300E40316 /* UIViewController+EXT.swift in Sources */,
+				9F84228A282C221600A8D454 /* SignInViewController.swift in Sources */,
 				9F86D7A2280BD5170092E98B /* ProfileUpdateViewController.swift in Sources */,
 				9F86D79B280BB9040092E98B /* FieldEntryTableViewCell.swift in Sources */,
 				9F6281B12805350900E40316 /* AuthSplashScreenViewController.swift in Sources */,

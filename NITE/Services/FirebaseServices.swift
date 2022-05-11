@@ -61,6 +61,33 @@ class FirebaseServices {
         }
     }
     
+    func loginUser(email: String, password: String, completion: @escaping (ErrorStatus?, Bool) -> ()) {
+        Auth.auth().signIn(withEmail: email, password: password) { auth, error in
+            if let error = error {
+                completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none), false)
+                return
+            }
+            
+            if let userUID = auth?.user.uid {
+                self.getUserProfile(_withUID: userUID) { errorStatus, publicUser in
+                    if let errorStatus = errorStatus {
+                        completion(errorStatus, false)
+                        try? Auth.auth().signOut()
+                    } else {
+                        if let publicUser = publicUser {
+                            self.setCurrentUserProfile(profile: publicUser)
+                            completion(nil, true)
+                            return
+                        }
+                        
+                        try? Auth.auth().signOut()
+                        completion(nil, false)
+                    }
+                }
+            }
+        }
+    }
+    
     func updateDataBaseUserProfile(_withUID uid: String, newProfileImages: [UIImage]?, updatedProfileData: PublicUserProfile, deletedImagesURLS: [String]?, completion: @escaping (ErrorStatus?) -> ()) {
         do {
             var updatedProfile = updatedProfileData
@@ -244,17 +271,6 @@ class FirebaseServices {
         
         group.notify(queue: .main) {
             completion(nil, images)
-        }
-    }
-    
-    func loginUser(email: String, password: String, completion: @escaping (ErrorStatus?) -> ()) {
-        Auth.auth().signIn(withEmail: email, password: password) { autResults, error in
-            if error != nil {
-                completion(ErrorStatus(errorMsg: error!.localizedDescription, errorMessageType: .unknownError))
-                return
-            }
-            
-            completion(nil)
         }
     }
     

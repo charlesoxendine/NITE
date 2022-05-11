@@ -50,6 +50,10 @@ class AuthSplashScreenViewController: UIViewController {
     }
     
     @IBAction func signInTapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Auth", bundle: nil)
+        if let newVC = storyboard.instantiateViewController(withIdentifier: "SignInViewController") as? SignInViewController {
+            self.navigationController?.pushViewController(newVC, animated: true)
+        }
     }
     
     @IBAction func signUpTapped(_ sender: Any) {

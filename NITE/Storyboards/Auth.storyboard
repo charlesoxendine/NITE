@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Iks-NN-Nc8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Iks-NN-Nc8">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -159,6 +159,76 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bft-Z4-lXS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-23.188405797101453" y="47.544642857142854"/>
+        </scene>
+        <!--Sign In View Controller-->
+        <scene sceneID="lHS-WY-m0K">
+            <objects>
+                <viewController storyboardIdentifier="SignInViewController" modalPresentationStyle="fullScreen" id="h0F-3m-xEk" customClass="SignInViewController" customModule="NITE" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2Bk-BU-y5P">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHE-pc-C8n" userLabel="Top View">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oUU-lQ-IYJ">
+                                        <rect key="frame" x="20" y="24" width="180" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="180" id="4zm-vk-PrT"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="27"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sPH-Lg-Rg1">
+                                        <rect key="frame" x="341" y="24" width="53" height="32"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="17"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="0.2274509804" green="0.52941176469999995" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancelButtonTapped:" destination="h0F-3m-xEk" eventType="touchUpInside" id="Exw-Fi-kkX"/>
+                                            <action selector="cancelTapped:" destination="h0F-3m-xEk" eventType="touchUpInside" id="sEK-sI-dWw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="oUU-lQ-IYJ" firstAttribute="centerY" secondItem="eHE-pc-C8n" secondAttribute="centerY" id="9W5-GO-36J"/>
+                                    <constraint firstItem="sPH-Lg-Rg1" firstAttribute="centerY" secondItem="eHE-pc-C8n" secondAttribute="centerY" id="gCi-HW-jri"/>
+                                    <constraint firstItem="oUU-lQ-IYJ" firstAttribute="leading" secondItem="eHE-pc-C8n" secondAttribute="leading" constant="20" id="iFy-Jr-7co"/>
+                                    <constraint firstAttribute="height" constant="80" id="siK-Pc-eP3"/>
+                                    <constraint firstAttribute="trailing" secondItem="sPH-Lg-Rg1" secondAttribute="trailing" constant="20" id="uJy-Cn-VT3"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EW3-du-MUk">
+                                <rect key="frame" x="0.0" y="80" width="414" height="762"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="1vo-r7-4lA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="EW3-du-MUk" firstAttribute="bottom" secondItem="2Bk-BU-y5P" secondAttribute="bottom" id="Amf-1W-a8Y"/>
+                            <constraint firstItem="EW3-du-MUk" firstAttribute="leading" secondItem="1vo-r7-4lA" secondAttribute="leading" id="FEl-97-o7b"/>
+                            <constraint firstItem="EW3-du-MUk" firstAttribute="trailing" secondItem="1vo-r7-4lA" secondAttribute="trailing" id="HNB-Md-HeZ"/>
+                            <constraint firstItem="eHE-pc-C8n" firstAttribute="leading" secondItem="1vo-r7-4lA" secondAttribute="leading" id="aNX-Ns-ely"/>
+                            <constraint firstItem="EW3-du-MUk" firstAttribute="top" secondItem="eHE-pc-C8n" secondAttribute="bottom" id="d1f-Cd-SdS"/>
+                            <constraint firstItem="1vo-r7-4lA" firstAttribute="trailing" secondItem="eHE-pc-C8n" secondAttribute="trailing" id="ibn-gS-2Sb"/>
+                            <constraint firstItem="eHE-pc-C8n" firstAttribute="top" secondItem="1vo-r7-4lA" secondAttribute="top" id="whk-NI-Kxh"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Ngc-hi-Yyb"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="sPH-Lg-Rg1" id="pKf-i1-Fil"/>
+                        <outlet property="tableView" destination="EW3-du-MUk" id="zsQ-kx-FXy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="snf-RM-lL0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1829" y="-380"/>
         </scene>
     </scenes>
     <resources>

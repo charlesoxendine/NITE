@@ -223,7 +223,11 @@ extension SignUpViewController: singleButtonFooterViewDelegate {
         }
         
         let newProfile = PublicUserProfile(id: UUID().uuidString, firstName: self.newData.firstName, lastName: self.newData.lastName, description: nil, imageLocations:nil, avatarImageLocation: nil, interests: nil, geohash: nil, lat: nil, long: nil)
+        
+        self.showLoadingIndicator()
         FirebaseServices.shared.createUser(email: emailStringCleaned, password: self.newData.password!, newProfileData: newProfile) { error in
+            self.removeLoadingIndicator()
+            
             if let error = error {
                 self.showErrorMessage(message: error.errorMsg)
                 return
