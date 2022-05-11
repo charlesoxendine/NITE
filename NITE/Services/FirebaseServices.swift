@@ -331,6 +331,26 @@ class FirebaseServices {
         }
     }
     
+    func checkForMatch(otherUserUID: String, completion: @escaping (ErrorStatus?, Bool?) -> ()) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let query = LIKE_DATA_COLLECTION.whereField("likedUserUID", isEqualTo: uid).whereField("likingUserUID", isEqualTo: otherUserUID)
+        query.getDocuments { snap, error in
+            if let error = error {
+                completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none), nil)
+                return
+            }
+            
+            if snap?.documents.isEmpty == true {
+                completion(nil, false)
+            } else {
+                completion(nil, true)
+            }
+        }
+    }
+    
     func getNextFiveProfiles(completion: @escaping (ErrorStatus?, [PublicUserProfile]?) -> ()) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return

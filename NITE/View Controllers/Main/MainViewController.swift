@@ -121,6 +121,14 @@ class MainViewController: UIViewController {
         print("Logged out")
     }
     
+    @IBAction func likeButtonTapped(_ sender: Any) {
+        self.cardStack.swipe(.right, animated: true)
+    }
+    
+    @IBAction func dislikeButtonTapped(_ sender: Any) {
+        self.cardStack.swipe(.left, animated: true)
+    }
+    
 }
 
 extension MainViewController: SwipeCardStackDataSource, SwipeCardStackDelegate {
