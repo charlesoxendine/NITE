@@ -13,6 +13,8 @@ import FirebaseFirestoreSwift
 import FirebaseStorage
 import CoreLocation
 import GeoFire
+import SendBirdSDK
+import SendBirdUIKit
 
 class FirebaseServices {
     
@@ -21,14 +23,14 @@ class FirebaseServices {
     private let USER_COLLECTION = Firestore.firestore().collection("users")
     private let LIKE_DATA_COLLECTION = Firestore.firestore().collection("like_data")
     private let DISLIKE_DATA_COLLECTION = Firestore.firestore().collection("dislike_data")
-    
+    private let MATCH_DATA_COLLECTION = Firestore.firestore().collection("match_data")
     private let storage = Storage.storage()
     
     func getCurrentUserProfile() -> PublicUserProfile? {
         return currentUserProfile
     }
     
-    func setCurrentUserProfile(profile: PublicUserProfile) {
+    func setCurrentUserProfile(profile: PublicUserProfile?) {
         currentUserProfile = profile
     }
     
@@ -56,6 +58,7 @@ class FirebaseServices {
                     return
                 }
                 
+                self.initializeSendBirdUser()
                 completion(nil)
             }
         }
@@ -76,6 +79,7 @@ class FirebaseServices {
                     } else {
                         if let publicUser = publicUser {
                             self.setCurrentUserProfile(profile: publicUser)
+                            self.initializeSendBirdUser()
                             completion(nil, true)
                             return
                         }
@@ -139,7 +143,7 @@ class FirebaseServices {
         
         let docRef = USER_COLLECTION.document(uid)
         docRef.getDocument { (document, error) in
-            let result = Result {
+            _ = Result {
                 try document.flatMap {
                     let data = try? $0.data(as: PublicUserProfile.self)
                     completion(nil, data)
@@ -295,7 +299,47 @@ class FirebaseServices {
         }
     }
     
-    func logDislike(dislikedUserUID: String, completion: @escaping (ErrorStatus?) -> ()) {
+    func createMessageChannelForMatch(otherUserUID: String, completion: @escaping (ErrorStatus?) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        SBDGroupChannel.createChannel(withUserIds: [userUID, otherUserUID], isDistinct: true, completionHandler: { (groupChannel, error) in
+            guard error == nil else {
+                completion(ErrorStatus(errorMsg: error!.localizedDescription, errorMessageType: .none))
+                return
+            }
+            
+            completion(nil)
+        })
+    }
+    
+    func initializeSendBirdUser() {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        SBDMain.connect(withUserId: userID) { user, error in
+            guard let user = user, error == nil else {
+                return
+            }
+            
+            guard let currentUserProfile = self.currentUserProfile else {
+                return
+            }
+
+            SBDMain.updateCurrentUserInfo(withNickname: currentUserProfile.fullName(), profileUrl: currentUserProfile.avatarImageLocation, completionHandler: { (error) in
+                guard error == nil else {
+                    // Handle error.
+                    return
+                }
+                
+                print("User with ID \(user.userId) connected to Sendbird")
+            })
+        }
+    }
+    
+    func logDislikeData(dislikedUserUID: String, completion: @escaping (ErrorStatus?) -> ()) {
         do {
             let dislikeUUID = UUID().uuidString
             guard let userUID = Auth.auth().currentUser?.uid else {
@@ -305,6 +349,24 @@ class FirebaseServices {
             let likeObj = DislikeData(dislikedUserUID: dislikedUserUID, dislikingUserUID: userUID, date: Timestamp(date: Date()))
             try DISLIKE_DATA_COLLECTION.document(dislikeUUID).setData(from: likeObj, merge: true)
             completion(nil)
+        } catch let error {
+            print("Error: \(error.localizedDescription)")
+            completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none))
+        }
+    }
+    
+    func logMatchData(otherUserMatchedWith: String, completion: @escaping (ErrorStatus?) -> ()) {
+        do {
+            guard let userUID = Auth.auth().currentUser?.uid else {
+                return
+            }
+            
+            let matchUUID = UUID().uuidString
+            let matchObj = matchData(users: [userUID, otherUserMatchedWith], matchDate: Timestamp(date: Date()))
+            try MATCH_DATA_COLLECTION.document(matchUUID).setData(from: matchObj, merge: true)
+            createMessageChannelForMatch(otherUserUID: otherUserMatchedWith) { errorStatus in
+                completion(errorStatus)
+            }
         } catch let error {
             print("Error: \(error.localizedDescription)")
             completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none))

@@ -32,7 +32,7 @@ class AuthSplashScreenViewController: UIViewController {
             return
         }
         
-        FirebaseServices.shared.getUserProfile(_withUID: fireUser.uid ?? "") { error, publicProfile in
+        FirebaseServices.shared.getUserProfile(_withUID: fireUser.uid) { error, publicProfile in
             if let error = error {
                 FirebaseServices.shared.logoutUser()
                 return
@@ -40,6 +40,8 @@ class AuthSplashScreenViewController: UIViewController {
             
             if publicProfile != nil {
                 FirebaseServices.shared.setCurrentUserProfile(profile: publicProfile!)
+                
+                FirebaseServices.shared.initializeSendBirdUser()
                 
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let newVC = storyboard.instantiateViewController(withIdentifier: "MainNav")

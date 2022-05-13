@@ -116,10 +116,10 @@ class ProfileUpdateViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileButton)
         
         let avatarEditButton = UIButton(type: .custom)
-        let avatarIcon = UIImage(systemName: "person")!
+        let avatarIcon = UIImage(systemName: "power")!
         configuration.image = avatarIcon
         avatarEditButton.configuration = configuration
-        avatarEditButton.addTarget(self, action: #selector(self.avatarEditAction), for: .touchUpInside)
+        avatarEditButton.addTarget(self, action: #selector(self.logoutTapped), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: avatarEditButton)
     }
     
@@ -140,8 +140,16 @@ class ProfileUpdateViewController: UIViewController {
         }
     }
     
-    @objc func avatarEditAction() {
-        if SCSDKLoginClient.isUserLoggedIn == true {
+    @objc func logoutTapped() {
+        try? Auth.auth().signOut()
+        FirebaseServices.shared.setCurrentUserProfile(profile: nil)
+        
+        let storyboard = UIStoryboard(name: "Auth", bundle: nil)
+        let newVC = storyboard.instantiateViewController(withIdentifier: "main")
+        newVC.modalPresentationStyle = .fullScreen
+        self.present(newVC, animated: true)
+        // Snapchat code to be moved
+        /*if SCSDKLoginClient.isUserLoggedIn == true {
             snapchatServices.shared.getUpdatedBitmojiAvatarURL { url in
                 if let avatarURL = url {
                     if var newUser = FirebaseServices.shared.getCurrentUserProfile() {
@@ -167,7 +175,7 @@ class ProfileUpdateViewController: UIViewController {
                     }
                 }
             }
-        }
+        }*/
     }
     
     @objc func backAction() {

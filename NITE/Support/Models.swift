@@ -79,6 +79,16 @@ struct DislikeData: Codable {
     }
 }
 
+struct matchData: Codable {
+    var users: [String]
+    var matchDate: Timestamp
+    
+    enum CodingKeys: String, CodingKey {
+        case users
+        case matchDate
+    }
+}
+
 struct profileView: Codable {
     var profileViewedUID: String!
     var viewDate: Timestamp!

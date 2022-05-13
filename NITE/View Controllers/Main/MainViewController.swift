@@ -9,6 +9,8 @@ import UIKit
 import Shuffle_iOS
 import FirebaseAuth
 import FirebaseFirestoreSwift
+import SendBirdSDK
+import SendBirdUIKit
 
 class MainViewController: UIViewController {
 
@@ -110,15 +112,27 @@ class MainViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: matchesButton)
     }
     
+    func toMatchView(matchUserProfile: PublicUserProfile) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let newVC = storyboard.instantiateViewController(withIdentifier: "matchNotifViewController") as? matchNotifViewController
+        newVC?.modalPresentationStyle = .fullScreen
+        newVC?.matchProfile = matchUserProfile
+        self.present(newVC!, animated: true)
+    }
+    
     @objc private func profileAction() -> Void {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let newVC = storyboard.instantiateViewController(withIdentifier: "ProfileUpdateViewController") as? ProfileUpdateViewController
         self.navigationController?.pushViewController(newVC!, animated: true)
     }
     
-    @objc private func matchesAction() -> Void {
-        try? Auth.auth().signOut()
-        print("Logged out")
+    @objc func matchesAction() -> Void {
+        let listQuery = SBDGroupChannel.createMyGroupChannelListQuery()
+        listQuery?.includeEmptyChannel = true
+        listQuery?.includeFrozenChannel = true
+
+        let channelListVC = SBUChannelListViewController(channelListQuery: listQuery)
+        self.navigationController?.pushViewController(channelListVC, animated: true)
     }
     
     @IBAction func likeButtonTapped(_ sender: Any) {
@@ -153,17 +167,41 @@ extension MainViewController: SwipeCardStackDataSource, SwipeCardStackDelegate {
             }
             
             if direction == .left {
-                FirebaseServices.shared.logDislike(dislikedUserUID: userData.id) { errorStatus in
+                FirebaseServices.shared.logDislikeData(dislikedUserUID: userData.id) { errorStatus in
                     if errorStatus != nil {
                         self.showErrorMessage(message: errorStatus!.errorMsg)
                         return
                     }
                 }
             } else {
-                FirebaseServices.shared.logLikeData(likedUserUID: userData.id) { errorStatus in
-                    if errorStatus != nil {
-                        self.showErrorMessage(message: errorStatus!.errorMsg)
+                FirebaseServices.shared.checkForMatch(otherUserUID: userData.id) { error, match in
+                    if error != nil {
+                        self.showErrorMessage(message: error!.errorMsg)
                         return
+                    }
+                    
+                    if match == true {
+                        // SHOW MATCH VIEW AND LOG MATCH
+                        print("It's a match!!")
+                        self.showLoadingIndicator()
+                        FirebaseServices.shared.logMatchData(otherUserMatchedWith: userData.id) { errorStatus in
+                            self.removeLoadingIndicator()
+                            if errorStatus != nil {
+                                self.showErrorMessage(message: errorStatus!.errorMsg)
+                                return
+                            }
+                            
+                            self.toMatchView(matchUserProfile: userData)
+                        }
+                        
+                        return
+                    }
+                    
+                    FirebaseServices.shared.logLikeData(likedUserUID: userData.id) { errorStatus in
+                        if errorStatus != nil {
+                            self.showErrorMessage(message: errorStatus!.errorMsg)
+                            return
+                        }
                     }
                 }
             }

@@ -8,6 +8,8 @@
 import UIKit
 import Firebase
 import SCSDKLoginKit
+import SendBirdSDK
+import SendBirdUIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +17,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
-        let db = Firestore.firestore()
+        
+        let APP_ID = "29E0A5DC-4102-454D-ACB0-59EC1403BC17"
+        SBDMain.initWithApplicationId(APP_ID, useCaching: false) {
+            print("Successfully initialized Sendbird application")
+        } completionHandler: { error in
+            print("[SENDBIRD] Error initializing app with message: \(error?.localizedDescription ?? "")")
+        }
+        
+        // set channel list theme
+        let channelListTheme = SBUChannelListTheme(
+            leftBarButtonTintColor: .themeBlueGray(),
+            rightBarButtonTintColor: .themeBlueGray()
+        )
+
+        let channelTheme = SBUChannelTheme(leftBarButtonTintColor: .themeBlueGray(), rightBarButtonTintColor: .themeBlueGray(), menuTextColor: .themeBlueGray(), menuItemTintColor: .themeBlueGray(), channelStateBannerTextColor: .themeBlueGray(), channelStateBannerBackgroundColor: .themeBlueGray())
+        
+        let settingsTheme = SBUChannelSettingsTheme(leftBarButtonTintColor: .themeBlueGray(), rightBarButtonTintColor: .themeBlueGray(), cellTypeIconTintColor: .themeBlueGray())
+        
+        let newTheme = SBUTheme(
+            channelListTheme: channelListTheme, channelTheme: channelTheme, channelSettingsTheme: settingsTheme)
+
+        SBUTheme.set(theme: newTheme)
+        
         return true
     }
 

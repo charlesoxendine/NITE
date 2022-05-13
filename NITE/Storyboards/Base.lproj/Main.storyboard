@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -78,6 +79,121 @@
             </objects>
             <point key="canvasLocation" x="886.95652173913049" y="81.696428571428569"/>
         </scene>
+        <!--Match Notif View Controller-->
+        <scene sceneID="AT4-5y-aZk">
+            <objects>
+                <viewController storyboardIdentifier="matchNotifViewController" id="t4n-dV-V0C" customClass="matchNotifViewController" customModule="NITE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="L3X-gi-9dn">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It's a Match!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oor-wy-iJv">
+                                <rect key="frame" x="124" y="94" width="166.5" height="36"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LuS-lP-3L7">
+                                <rect key="frame" x="40" y="160" width="334" height="350"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="350" id="Eye-Xf-xOI"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgG-uv-VGe">
+                                <rect key="frame" x="40" y="620.5" width="334" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="2VD-Rr-vFG"/>
+                                </constraints>
+                                <color key="tintColor" red="0.96449643370000004" green="0.9687036872" blue="0.96855813260000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Send Message">
+                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="18"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="messageMatchButtonTapped:" destination="t4n-dV-V0C" eventType="touchUpInside" id="GoV-nj-tSP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SUK-lH-rt4">
+                                <rect key="frame" x="339" y="59" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="1xJ-34-DrD"/>
+                                    <constraint firstAttribute="width" constant="50" id="oH0-LK-E0j"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="">
+                                    <imageReference key="image" image="xmark.circle" catalog="system" symbolScale="large"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="closeButtonTapped:" destination="t4n-dV-V0C" eventType="touchUpInside" id="0Gr-v2-pZU"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't leave NAME hanging! Say something interesting..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CvS-p8-PE8">
+                                <rect key="frame" x="40" y="545" width="334" height="45.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="7Vs-Jl-9ga"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="CvS-p8-PE8" firstAttribute="leading" secondItem="7Vs-Jl-9ga" secondAttribute="leading" constant="40" id="0hY-2P-bKH"/>
+                            <constraint firstItem="7Vs-Jl-9ga" firstAttribute="trailing" secondItem="SUK-lH-rt4" secondAttribute="trailing" constant="25" id="7k0-Za-XwQ"/>
+                            <constraint firstItem="LuS-lP-3L7" firstAttribute="leading" secondItem="7Vs-Jl-9ga" secondAttribute="leading" constant="40" id="HKv-pE-jfN"/>
+                            <constraint firstItem="7Vs-Jl-9ga" firstAttribute="trailing" secondItem="CvS-p8-PE8" secondAttribute="trailing" constant="40" id="HMv-xl-bol"/>
+                            <constraint firstItem="qgG-uv-VGe" firstAttribute="top" secondItem="CvS-p8-PE8" secondAttribute="bottom" constant="30" id="HQB-eS-JDX"/>
+                            <constraint firstItem="7Vs-Jl-9ga" firstAttribute="trailing" secondItem="qgG-uv-VGe" secondAttribute="trailing" constant="40" id="Jxa-Pp-le4"/>
+                            <constraint firstItem="7Vs-Jl-9ga" firstAttribute="trailing" secondItem="LuS-lP-3L7" secondAttribute="trailing" constant="40" id="LPc-Ok-gff"/>
+                            <constraint firstItem="oor-wy-iJv" firstAttribute="top" secondItem="7Vs-Jl-9ga" secondAttribute="top" constant="50" id="Mft-hO-oT6"/>
+                            <constraint firstItem="qgG-uv-VGe" firstAttribute="leading" secondItem="7Vs-Jl-9ga" secondAttribute="leading" constant="40" id="Rgl-e3-gF2"/>
+                            <constraint firstItem="CvS-p8-PE8" firstAttribute="top" secondItem="LuS-lP-3L7" secondAttribute="bottom" constant="35" id="UcA-sY-Hoc"/>
+                            <constraint firstItem="SUK-lH-rt4" firstAttribute="top" secondItem="7Vs-Jl-9ga" secondAttribute="top" constant="15" id="WUb-iC-LAe"/>
+                            <constraint firstItem="oor-wy-iJv" firstAttribute="centerX" secondItem="L3X-gi-9dn" secondAttribute="centerX" id="duG-Pj-lTB"/>
+                            <constraint firstItem="LuS-lP-3L7" firstAttribute="centerX" secondItem="L3X-gi-9dn" secondAttribute="centerX" id="kFJ-kR-cG6"/>
+                            <constraint firstItem="LuS-lP-3L7" firstAttribute="top" secondItem="oor-wy-iJv" secondAttribute="bottom" constant="30" id="y1z-8Z-mFc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="SUK-lH-rt4" id="2bo-TR-j19"/>
+                        <outlet property="matchProfileImage" destination="LuS-lP-3L7" id="BHF-3K-tvM"/>
+                        <outlet property="messageMatchButton" destination="qgG-uv-VGe" id="aBp-qa-lh8"/>
+                        <outlet property="messageMatchText" destination="CvS-p8-PE8" id="yEn-Hm-nTG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rQB-qj-B7K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="886.95652173913049" y="813.61607142857144"/>
+        </scene>
+        <!--Match Chats View Controller-->
+        <scene sceneID="TtK-1d-sYs">
+            <objects>
+                <viewController storyboardIdentifier="matchChatsViewController" id="9gG-Ko-D0r" customClass="matchChatsViewController" customModule="NITE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="X4y-D9-n51">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="MzN-nm-dyo">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="UUW-Ku-TEt"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="MzN-nm-dyo" firstAttribute="top" secondItem="UUW-Ku-TEt" secondAttribute="top" id="LLz-Vt-pD3"/>
+                            <constraint firstItem="UUW-Ku-TEt" firstAttribute="trailing" secondItem="MzN-nm-dyo" secondAttribute="trailing" id="dyV-yj-a66"/>
+                            <constraint firstItem="MzN-nm-dyo" firstAttribute="leading" secondItem="UUW-Ku-TEt" secondAttribute="leading" id="fFm-ji-Ar4"/>
+                            <constraint firstAttribute="bottom" secondItem="MzN-nm-dyo" secondAttribute="bottom" id="mYF-vZ-c2f"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="MzN-nm-dyo" id="4St-vE-MkT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DPM-bM-3mU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1840.5797101449277" y="813.61607142857144"/>
+        </scene>
         <!--Profile Update View Controller-->
         <scene sceneID="uPO-LD-GdO">
             <objects>
@@ -137,6 +253,7 @@
     <resources>
         <image name="heart.circle.fill" catalog="system" width="128" height="121"/>
         <image name="x.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
