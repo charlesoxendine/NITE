@@ -8,6 +8,7 @@
 import Foundation
 import SendBirdUIKit
 import UIKit
+import FirebaseFirestoreSwift
 
 extension SBUChannelViewController {
     
@@ -34,8 +35,38 @@ extension SBUChannelViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
     }
     
-    
     @objc private func profileAction() {
-        print("HELLO")
+        self.showLoadingIndicator()
+        
+        SendbirdServices.shared.getMemberList(channelURL: self.channelUrl ?? "") { error, memberList in
+            if let error = error {
+                self.removeLoadingIndicator()
+                self.showErrorMessage(message: error.errorMsg)
+                return
+            }
+            
+            guard let currentUserUID = FirebaseServices.shared.getCurrentUserProfile()?.id else {
+                self.removeLoadingIndicator()
+                return
+            }
+            
+            guard let profileUserID = memberList?.first(where: { $0.user_id != currentUserUID })?.user_id else {
+                self.removeLoadingIndicator()
+                return
+            }
+            
+            FirebaseServices.shared.getUserProfile(_withUID: profileUserID) { errorStatus, profile in
+                self.removeLoadingIndicator()
+                if let errorStatus = errorStatus {
+                    self.showErrorMessage(message: error.errorMsg)
+                    return
+                }
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let newVC = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as? UserProfileViewController
+                newVC?.profileUserObj = profile
+                self.navigationController?.pushViewController(newVC!, animated: true)
+            }
+        }
     }
 }

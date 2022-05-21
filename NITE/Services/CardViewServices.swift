@@ -13,7 +13,7 @@ class CardViewServices {
     public static func createCard(_withProfile profile: PublicUserProfile, cardStack: SwipeCardStack) -> SwipeCard {
         let card = SwipeCard()
         card.swipeDirections = [.left, .right]
-        let contentView = cardView(frame: cardStack.bounds)
+        let contentView = CardView(frame: cardStack.bounds)
         contentView.clipsToBounds = true
         contentView.cardProfile = profile
         card.content = contentView

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3te-4W-RW7">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -82,7 +83,7 @@
         <!--Match Notif View Controller-->
         <scene sceneID="AT4-5y-aZk">
             <objects>
-                <viewController storyboardIdentifier="matchNotifViewController" id="t4n-dV-V0C" customClass="matchNotifViewController" customModule="NITE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="matchNotifViewController" id="t4n-dV-V0C" customClass="MatchNotifViewController" customModule="NITE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="L3X-gi-9dn">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -222,7 +223,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvp-XJ-kHt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1753.6231884057972" y="81.696428571428569"/>
+            <point key="canvasLocation" x="1900" y="82"/>
         </scene>
         <!--Item-->
         <scene sceneID="4uR-Sl-v4J">
@@ -248,6 +249,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAl-ni-YCT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-23.188405797101453" y="81.696428571428569"/>
+        </scene>
+        <!--User Profile View Controller-->
+        <scene sceneID="pe6-p5-FGu">
+            <objects>
+                <viewController storyboardIdentifier="UserProfileViewController" id="wZ5-Y8-dfV" customClass="UserProfileViewController" customModule="NITE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="l4c-IS-dxv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="SaZ-jc-RoO">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="fo5-pR-F9P"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="SaZ-jc-RoO" secondAttribute="bottom" id="95m-rz-1Ho"/>
+                            <constraint firstItem="SaZ-jc-RoO" firstAttribute="top" secondItem="fo5-pR-F9P" secondAttribute="top" id="CWS-Ej-AEi"/>
+                            <constraint firstItem="SaZ-jc-RoO" firstAttribute="leading" secondItem="fo5-pR-F9P" secondAttribute="leading" id="S5V-FU-LWy"/>
+                            <constraint firstItem="fo5-pR-F9P" firstAttribute="trailing" secondItem="SaZ-jc-RoO" secondAttribute="trailing" id="aQM-G4-d1u"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="SaZ-jc-RoO" id="QWy-KS-xoP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0ER-Mr-S9P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2771" y="82"/>
         </scene>
     </scenes>
     <resources>

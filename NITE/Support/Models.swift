@@ -9,6 +9,26 @@ import Foundation
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
+struct SendbirdMemberListResponse: Codable {
+    let members: [SendbirdMemberObject]?
+    let next: String?
+}
+
+struct SendbirdMemberObject: Codable {
+    let user_id: String?
+    let nickname: String?
+    let profile_url: String?
+    let is_active: Bool?
+    let is_online: Bool?
+    let is_muted: Bool?
+    let state: String?
+    let role: String?
+    let delivered_ts: Int?
+    let read_ts: Int?
+    let last_seen_at: Int?
+    let metadata: [String: String]?
+}
+
 struct PublicUserProfile: Codable {
     var id: String!
     var firstName: String?

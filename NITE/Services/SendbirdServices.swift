@@ -38,5 +38,28 @@ class SendbirdServices {
             }
         }
     }
+    
+    func getMemberList(channelURL: String, completion: @escaping (ErrorStatus?, [SendbirdMemberObject]?) -> ()) {
+        guard let url = URL(string: "https://api-\(sendBirdAppID).sendbird.com/v3/group_channels/\(channelURL)/members")
+        else {
+            return
+        }
+        
+        
+        let headers: HTTPHeaders = [
+            "Api-Token": sendBirdMasterToken,
+            "Content-Type": "application/json; charset=utf8"
+        ]
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseDecodable(of: SendbirdMemberListResponse.self) { (response) in
+            switch response.result {
+            case .success(let channelResponse):
+                completion(nil, channelResponse.members ?? [])
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(ErrorStatus(errorMsg: "Error getting member list", errorMessageType: .none), nil)
+            }
+        }
+    }
 }
 

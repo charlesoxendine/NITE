@@ -7,7 +7,7 @@
 
 import UIKit
 
-class cardView: UIView {
+class CardView: UIView {
 
     @IBOutlet weak var contentView: UIView!
     
@@ -35,7 +35,7 @@ class cardView: UIView {
     }
 
     func initSubviews() {
-        let nib = UINib(nibName: "cardView", bundle: nil)
+        let nib = UINib(nibName: "CardView", bundle: nil)
         nib.instantiate(withOwner: self, options: nil)
         contentView.frame = frame
         contentView.layer.cornerRadius = 15

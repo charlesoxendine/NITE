@@ -114,7 +114,7 @@ class MainViewController: UIViewController {
     
     func toMatchView(matchUserProfile: PublicUserProfile) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let newVC = storyboard.instantiateViewController(withIdentifier: "matchNotifViewController") as? matchNotifViewController
+        let newVC = storyboard.instantiateViewController(withIdentifier: "matchNotifViewController") as? MatchNotifViewController
         newVC?.modalPresentationStyle = .fullScreen
         newVC?.matchProfile = matchUserProfile
         self.present(newVC!, animated: true)

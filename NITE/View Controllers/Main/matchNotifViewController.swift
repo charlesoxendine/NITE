@@ -7,7 +7,7 @@
 
 import UIKit
 
-class matchNotifViewController: UIViewController {
+class MatchNotifViewController: UIViewController {
 
     @IBOutlet weak var messageMatchButton: UIButton!
     @IBOutlet weak var matchProfileImage: UIImageView!

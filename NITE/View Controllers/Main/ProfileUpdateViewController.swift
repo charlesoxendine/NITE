@@ -148,34 +148,6 @@ class ProfileUpdateViewController: UIViewController {
         let newVC = storyboard.instantiateViewController(withIdentifier: "main")
         newVC.modalPresentationStyle = .fullScreen
         self.present(newVC, animated: true)
-        // Snapchat code to be moved
-        /*if SCSDKLoginClient.isUserLoggedIn == true {
-            snapchatServices.shared.getUpdatedBitmojiAvatarURL { url in
-                if let avatarURL = url {
-                    if var newUser = FirebaseServices.shared.getCurrentUserProfile() {
-                        newUser.avatarImageLocation = avatarURL.absoluteString
-                        
-                        FirebaseServices.shared.updateDataBaseUserProfile(_withUID: Auth.auth().currentUser?.uid ?? "", newProfileImages: [], updatedProfileData: newUser, deletedImagesURLS: []) { error in
-                            print("Successful update of avatar url")
-                        }
-                    }
-                }
-            }
-        } else {
-            SCSDKLoginClient.login(from: self) { (success : Bool, error : Error?) in
-                snapchatServices.shared.getUpdatedBitmojiAvatarURL { url in
-                    if let avatarURL = url {
-                        if var newUser = FirebaseServices.shared.getCurrentUserProfile() {
-                            newUser.avatarImageLocation = avatarURL.absoluteString
-                            
-                            FirebaseServices.shared.updateDataBaseUserProfile(_withUID: Auth.auth().currentUser?.uid ?? "", newProfileImages: [], updatedProfileData: newUser, deletedImagesURLS: []) { error in
-                                print("Successful update of avatar url")
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
     }
     
     @objc func backAction() {
