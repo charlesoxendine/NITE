@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import JGProgressHUD
+import SendBirdUIKit
 
 let LOADING_HUD = JGProgressHUD()
 
@@ -42,4 +43,13 @@ extension UIViewController {
         LOADING_HUD.dismiss()
     }
     
+    func openChatList() {
+        let listQuery = SBDGroupChannel.createMyGroupChannelListQuery()
+        listQuery?.includeEmptyChannel = true
+        listQuery?.includeFrozenChannel = true
+        let channelListVC = ChannelListVC(channelListQuery: listQuery)
+        let naviVC = UINavigationController(rootViewController: channelListVC)
+        naviVC.modalPresentationStyle = .fullScreen
+        present(naviVC, animated: true)
+    }
 }

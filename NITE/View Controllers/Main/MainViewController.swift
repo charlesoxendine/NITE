@@ -127,12 +127,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func matchesAction() -> Void {
-        let listQuery = SBDGroupChannel.createMyGroupChannelListQuery()
-        listQuery?.includeEmptyChannel = true
-        listQuery?.includeFrozenChannel = true
-
-        let channelListVC = SBUChannelListViewController(channelListQuery: listQuery)
-        self.navigationController?.pushViewController(channelListVC, animated: true)
+        self.openChatList()
     }
     
     @IBAction func likeButtonTapped(_ sender: Any) {

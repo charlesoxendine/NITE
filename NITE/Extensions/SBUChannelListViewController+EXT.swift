@@ -20,6 +20,5 @@ extension SBUChannelListViewController {
         self.rightBarButton?.isEnabled = false
         self.rightBarButton?.tintColor = .clear
     }
-    
 }
 

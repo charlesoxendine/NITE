@@ -304,16 +304,30 @@ class FirebaseServices {
             return
         }
         
-        SBDGroupChannel.createChannel(withUserIds: [userUID, otherUserUID], isDistinct: true, completionHandler: { (groupChannel, error) in
+        let groupMemberIDs = [userUID, otherUserUID]
+        
+        SBDGroupChannel.createChannel(withUserIds: groupMemberIDs, isDistinct: true, completionHandler: { (groupChannel, error) in
             guard error == nil else {
                 completion(ErrorStatus(errorMsg: error!.localizedDescription, errorMessageType: .none))
                 return
             }
             
-            completion(nil)
+            guard let channelURL = groupChannel?.channelUrl else {
+                fatalError("Group channel object not Found")
+                return
+            }
+            
+            SendbirdServices.shared.registerOperators(channelURL: channelURL, operatorIDs: groupMemberIDs) { addingOperatorError in
+                guard addingOperatorError == nil else {
+                    completion(ErrorStatus(errorMsg: addingOperatorError!.errorMsg, errorMessageType: .none))
+                    return
+                }
+                
+                completion(nil)
+            }
         })
     }
-    
+
     func initializeSendBirdUser() {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
@@ -334,7 +348,10 @@ class FirebaseServices {
                     return
                 }
                 
-                print("User with ID \(user.userId) connected to Sendbird")
+                if let user = SBDMain.getCurrentUser() {
+                    SBUGlobals.CurrentUser = SBUUser(user: user)
+                    print("User with ID \(user.userId) connected to Sendbird")
+                }
             })
         }
     }

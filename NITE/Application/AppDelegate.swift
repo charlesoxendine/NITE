@@ -33,10 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let channelTheme = SBUChannelTheme(leftBarButtonTintColor: .themeBlueGray(), rightBarButtonTintColor: .themeBlueGray(), menuTextColor: .themeBlueGray(), menuItemTintColor: .themeBlueGray(), channelStateBannerTextColor: .themeBlueGray(), channelStateBannerBackgroundColor: .themeBlueGray())
         
-        let settingsTheme = SBUChannelSettingsTheme(leftBarButtonTintColor: .themeBlueGray(), rightBarButtonTintColor: .themeBlueGray(), cellTypeIconTintColor: .themeBlueGray())
+        let listTheme = SBUMessageCellTheme(leftBackgroundColor: .themeLight(), rightBackgroundColor: .themeBlueGray(), userMessageLeftTextColor: .black, userMessageRightTextColor: .white)
         
         let newTheme = SBUTheme(
-            channelListTheme: channelListTheme, channelTheme: channelTheme, channelSettingsTheme: settingsTheme)
+            channelListTheme: channelListTheme, channelTheme: channelTheme, messageCellTheme: listTheme)
 
         SBUTheme.set(theme: newTheme)
         
