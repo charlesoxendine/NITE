@@ -325,6 +325,8 @@ class FirebaseServices {
                 
                 completion(nil)
             }
+            
+            completion(nil)
         })
     }
 
@@ -369,6 +371,28 @@ class FirebaseServices {
         } catch let error {
             print("Error: \(error.localizedDescription)")
             completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none))
+        }
+    }
+    
+    func getMatchData(userID1: String, userID2: String, completion: @escaping (matchData?) -> ()) {
+        let docRef = MATCH_DATA_COLLECTION.whereField("users", arrayContains: userID1)
+        docRef.getDocuments { snap, error in
+            if let snapshotDocuments = snap?.documents {
+                for document in snapshotDocuments {
+                    do {
+                        if let matchDataObj = try? document.data(as: matchData.self) {
+                            print(matchDataObj.matchDate)
+                            if matchDataObj.users.contains(where: { $0 == userID2 }) {
+                                completion(matchDataObj)
+                                return
+                            }
+                        }
+                    } catch let error as NSError {
+                        print("error: \(error.localizedDescription)")
+                        completion(nil)
+                    }
+                }
+            }
         }
     }
     

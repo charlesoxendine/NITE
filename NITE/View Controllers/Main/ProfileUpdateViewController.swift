@@ -164,7 +164,7 @@ extension ProfileUpdateViewController: UITableViewDelegate, UITableViewDataSourc
         if indexPath.row == ProfileFields.imagesField.rawValue {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? addImagesTableViewCell {
                 cell.delegate = self
-                cell.cellImages = self.newData?.profilePictures ?? []
+                cell.cellImagesTagged = self.newData?.profilePictures ?? []
                 return cell
             }
         }

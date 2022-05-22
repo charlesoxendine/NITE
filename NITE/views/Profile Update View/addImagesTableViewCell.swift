@@ -20,8 +20,18 @@ class addImagesTableViewCell: UITableViewCell {
     
     var delegate: addImagesTableViewCellDelegate?
     
-    var cellImages: [taggedImageObject] = [] {
+    private var profileUpdate: Bool?
+    
+    var cellImagesTagged: [taggedImageObject] = [] {
         didSet {
+            profileUpdate = true
+            collectionView.reloadData()
+        }
+    }
+    
+    var cellImages: [UIImage] = [] {
+        didSet {
+            profileUpdate = false
             collectionView.reloadData()
         }
     }
@@ -46,29 +56,41 @@ extension addImagesTableViewCell: UICollectionViewDataSource, UICollectionViewDe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCollectionViewCell", for: indexPath) as? imageCollectionViewCell
         cell?.imageView.isHidden = false
         
-        if indexPath.row < cellImages.count {
-            cell?.imageView.image = cellImages[indexPath.row].image
-        } else {
-            if indexPath.row >= cellImages.count {
-                cell?.setAsAddButton()
-                return cell!
+        if self.profileUpdate == true {
+            if indexPath.row < cellImagesTagged.count {
+                cell?.imageView.image = cellImagesTagged[indexPath.row].image
+            } else {
+                if indexPath.row >= cellImagesTagged.count {
+                    cell?.setAsAddButton()
+                    return cell!
+                }
+                
+                cell?.image = cellImagesTagged[indexPath.row].image
             }
-            
-            cell?.image = cellImages[indexPath.row].image
+        } else {
+            if indexPath.row < cellImages.count {
+                cell?.imageView.image = cellImages[indexPath.row]
+            } else {
+                cell?.image = cellImages[indexPath.row]
+            }
         }
         
         return cell!
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (self.cellImages.count + 1)
+        if self.profileUpdate == true {
+            return (self.cellImagesTagged.count + 1)
+        } else {
+            return self.cellImages.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row >= (self.cellImages.count) {
+        if indexPath.row >= (self.cellImagesTagged.count) {
             delegate?.didTapAddImageCell()
         } else {
-            self.delegate?.didTapImageCell(image: self.cellImages[indexPath.row])
+            self.delegate?.didTapImageCell(image: self.cellImagesTagged[indexPath.row])
         }
     }
     

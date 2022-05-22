@@ -24,7 +24,7 @@ extension SBUChannelViewController {
     
     func setHeaderProfileButton() {
         var buttonConfig = UIButton.Configuration.plain()
-        buttonConfig.imagePadding = -5
+        buttonConfig.imagePadding = -10
         let profileButton = UIButton(type: .custom)
         profileButton.configuration = buttonConfig
         let buttonIMG = UIImage(systemName: "person.circle")
@@ -58,7 +58,7 @@ extension SBUChannelViewController {
             FirebaseServices.shared.getUserProfile(_withUID: profileUserID) { errorStatus, profile in
                 self.removeLoadingIndicator()
                 if let errorStatus = errorStatus {
-                    self.showErrorMessage(message: error.errorMsg)
+                    self.showErrorMessage(message: errorStatus.errorMsg)
                     return
                 }
                 

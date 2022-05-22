@@ -15,6 +15,7 @@ class UserProfileViewController: UIViewController {
     
     var profileUserObj: PublicUserProfile?
     var footerView: singleButtonFooterView?
+    var profileImages: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,18 +33,66 @@ class UserProfileViewController: UIViewController {
         })
         
         setHeader()
+        checkMatchDateForImages()
     }
     
-    private func getProfileImages() {
+    private func checkMatchDateForImages() {
+        guard let otherUserUID = self.profileUserObj?.id,
+              let currentUserUID = FirebaseServices.shared.getCurrentUserProfile()?.id else {
+            return
+        }
         
+        FirebaseServices.shared.getMatchData(userID1: otherUserUID, userID2: currentUserUID) { matchObject in
+            if matchObject?.matchDate.dateValue() ?? Date() < Date().advanced(by: -259200) {
+                self.getProfileImages(showingPics: true)
+            } else {
+                self.getProfileImages(showingPics: false)
+            }
+        }
+    }
+    
+    private func getProfileImages(showingPics: Bool) {
+        guard let userObj = self.profileUserObj else {
+            return
+        }
+        
+        if showingPics == true {
+            self.setOnlyAvatar(avatarLocation: self.profileUserObj?.avatarImageLocation ?? "")
+        } else {
+            FirebaseServices.shared.getUserProfileImages(_withUID: userObj.id, _withImageIDs: userObj.imageLocations ?? []) { error, images in
+                var profileImages: [taggedImageObject] = images ?? []
+                if let avatarURL = URL(string: FirebaseServices.shared.getCurrentUserProfile()?.avatarImageLocation ?? "") {
+                    let data = try? Data(contentsOf: avatarURL)
+                    let avatarImage = UIImage(data: data!)
+                    let taggedIMG = taggedImageObject(url: avatarURL.absoluteString, image: avatarImage)
+                    profileImages.insert(taggedIMG, at: 0)
+                }
+                
+                var formattedProfileImages: [UIImage] = []
+                for images in profileImages {
+                    formattedProfileImages.append(images.image)
+                }
+                
+                self.profileImages = formattedProfileImages
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    private func setOnlyAvatar(avatarLocation: String) {
+        if let avatarURL = URL(string: avatarLocation) {
+            let data = try? Data(contentsOf: avatarURL)
+            if let avatarImage = UIImage(data: data!) {
+                self.profileImages = [avatarImage]
+                self.tableView.reloadData()
+            }
+        }
     }
     
     private func setHeader() {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithTransparentBackground()
         navBarAppearance.backgroundColor = .white
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.themeBlueGray(), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25)]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.themeBlueGray(), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25)]
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.standardAppearance = navBarAppearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
@@ -67,8 +116,9 @@ class UserProfileViewController: UIViewController {
     }
     
     @objc private func backAction() {
-        
+        self.navigationController?.popViewController(animated: true)
     }
+    
 }
 
 extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -80,6 +130,7 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
         if indexPath.row == ProfileFields.imagesField.rawValue {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? addImagesTableViewCell {
                 cell.delegate = self
+                cell.cellImages = self.profileImages
                 return cell
             }
         }
