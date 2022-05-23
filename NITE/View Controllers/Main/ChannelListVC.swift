@@ -16,6 +16,7 @@ class ChannelListVC: SBUChannelListViewController {
         super.init(channelListQuery: channelListQuery)
     }
     
+    
     override open func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let index = indexPath.row
         let channel = self.channelList[index]
@@ -61,8 +62,8 @@ class ChannelListVC: SBUChannelListViewController {
         
         let exitAction = UIAlertAction(title: "Close", style: .default)
         
-        alert.addAction(confirmAction)
         alert.addAction(exitAction)
+        alert.addAction(confirmAction)
         self.present(alert, animated: true)
     }
     

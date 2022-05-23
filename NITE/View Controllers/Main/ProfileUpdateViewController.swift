@@ -141,13 +141,22 @@ class ProfileUpdateViewController: UIViewController {
     }
     
     @objc func logoutTapped() {
-        try? Auth.auth().signOut()
-        FirebaseServices.shared.setCurrentUserProfile(profile: nil)
+        let alert = UIAlertController(title: "Are you sure?", message: "", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Logout", style: .default) { action in
+            try? Auth.auth().signOut()
+            FirebaseServices.shared.setCurrentUserProfile(profile: nil)
+            
+            let storyboard = UIStoryboard(name: "Auth", bundle: nil)
+            let newVC = storyboard.instantiateViewController(withIdentifier: "main")
+            newVC.modalPresentationStyle = .fullScreen
+            self.present(newVC, animated: true)
+        }
         
-        let storyboard = UIStoryboard(name: "Auth", bundle: nil)
-        let newVC = storyboard.instantiateViewController(withIdentifier: "main")
-        newVC.modalPresentationStyle = .fullScreen
-        self.present(newVC, animated: true)
+        let goBackAction = UIAlertAction(title: "Close", style: .default)
+        
+        alert.addAction(goBackAction)
+        alert.addAction(confirmAction)
+        self.present(alert, animated: true)
     }
     
     @objc func backAction() {
