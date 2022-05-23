@@ -12,13 +12,13 @@ import FirebaseFirestoreSwift
 
 extension SBUChannelViewController {
     
-    override open func viewDidLoad() {
-        super.viewDidLoad()
+    // CANT OVERRIDE THIS FUNCTION
+    override open func viewWillLayoutSubviews() {
         self.setHeader()
+        super.viewDidLoad()
     }
     
     func setHeader() {
-        self.title = "Chat"
         setHeaderProfileButton()
     }
     
