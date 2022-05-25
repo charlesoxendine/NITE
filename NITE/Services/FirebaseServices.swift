@@ -373,7 +373,7 @@ class FirebaseServices {
             completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none))
         }
     }
-    
+        
     func getMatchData(userID1: String, userID2: String, completion: @escaping (matchData?) -> ()) {
         let docRef = MATCH_DATA_COLLECTION.whereField("users", arrayContains: userID1)
         docRef.getDocuments { snap, error in

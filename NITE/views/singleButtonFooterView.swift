@@ -16,6 +16,12 @@ class singleButtonFooterView: UIView {
     @IBOutlet weak var mainButton: UIButton!
     
     var delegate: singleButtonFooterViewDelegate?
+    var customTitle: String? {
+        didSet {
+            mainButton.setTitle(customTitle, for: .normal)
+            mainButton.backgroundColor = .red
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

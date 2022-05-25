@@ -6,12 +6,20 @@
 //
 
 import UIKit
+import SendBirdSDK
+
+enum UserProfileSections: Int {
+    case profileImages
+    case userBio
+}
+
+var currentSelectedChannelObject: SBDGroupChannel?
 
 class UserProfileViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    let sectionTitles = ["Images"]
+    let sectionTitles = ["Images", "Bio"]
     
     var profileUserObj: PublicUserProfile?
     var footerView: singleButtonFooterView?
@@ -26,9 +34,10 @@ class UserProfileViewController: UIViewController {
         self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? singleButtonFooterView
         footerView?.delegate = self
         footerView?.autoresizingMask = []
+        footerView?.customTitle = "Unmatch"
         tableView.tableFooterView = footerView
         
-        ["addImagesTableViewCell"].forEach( {
+        ["addImagesTableViewCell", "UserDescriptionTableViewCell"].forEach( {
             tableView.register(UINib.init(nibName: $0, bundle: nil), forCellReuseIdentifier: $0)
         })
         
@@ -127,10 +136,16 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == ProfileFields.imagesField.rawValue {
+        if indexPath.row == UserProfileSections.profileImages.rawValue {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? addImagesTableViewCell {
                 cell.delegate = self
                 cell.cellImages = self.profileImages
+                return cell
+            }
+        } else if indexPath.row == UserProfileSections.userBio.rawValue {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "UserDescriptionTableViewCell", for: indexPath) as? UserDescriptionTableViewCell {
+                cell.captionLbl.text = self.sectionTitles[indexPath.row]
+                cell.descriptionLbl.text = self.profileUserObj?.description ?? ""
                 return cell
             }
         }
@@ -143,17 +158,43 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == ProfileFields.imagesField.rawValue {
+        if indexPath.row == UserProfileSections.profileImages.rawValue {
             return 300
         }
         
-        return 70
+        return UITableView.automaticDimension
     }
 }
 
 extension UserProfileViewController: singleButtonFooterViewDelegate {
     func didTapButton() {
-        // UNADD USER
+        let alert = UIAlertController(title: "Are you sure?", message: "If you unmatch, you will not see each other again and this action cannot be undone.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
+            guard let currentSelectedChannelObject = currentSelectedChannelObject else {
+                return
+            }
+
+            self.deleteChannel(channel: currentSelectedChannelObject)
+        }
+        
+        let exitAction = UIAlertAction(title: "Close", style: .default)
+        
+        alert.addAction(exitAction)
+        alert.addAction(confirmAction)
+        self.present(alert, animated: true)
+    }
+    
+    private func deleteChannel(channel: SBDGroupChannel) {
+        channel.delete { error in
+            if let error = error {
+                self.showErrorMessage(message: error.localizedDescription)
+                return
+            }
+            
+            self.showOkMessage(title: "Success", message: "Successfully unmatched...I guess it's back to looking!") {
+                // BACK TO MAIN VIEW
+            }
+        }
     }
 }
 

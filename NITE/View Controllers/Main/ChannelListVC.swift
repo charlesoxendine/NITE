@@ -14,8 +14,9 @@ class ChannelListVC: SBUChannelListViewController {
     
     override init(channelListQuery: SBDGroupChannelListQuery? = nil) {
         super.init(channelListQuery: channelListQuery)
+        self.rightBarButton?.isEnabled = false
+        self.rightBarButton?.tintColor = .clear
     }
-    
     
     override open func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let index = indexPath.row
@@ -75,7 +76,7 @@ class ChannelListVC: SBUChannelListViewController {
             }
             
             self.showOkMessage(title: "Success", message: "Successfully unmatched...I guess it's back to looking!") {
-                print("success")
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }
