@@ -25,6 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("[SENDBIRD] Error initializing app with message: \(error?.localizedDescription ?? "")")
         }
         
+        SBUStringSet.Empty_No_Channels = "No Matches, get swiping!"
+        SBUStringSet.ChannelList_Header_Title = "Matches"
+        
         // set channel list theme
         let channelListTheme = SBUChannelListTheme(
             leftBarButtonTintColor: .themeBlueGray(),

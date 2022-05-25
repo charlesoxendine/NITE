@@ -18,6 +18,12 @@ class ChannelListVC: SBUChannelListViewController {
         self.rightBarButton?.tintColor = .clear
     }
     
+    override func setupStyles() {
+        super.setupStyles()
+        self.title = "Matches"
+        self.navigationItem.title = "Matches"
+    }
+    
     override open func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let index = indexPath.row
         let channel = self.channelList[index]
