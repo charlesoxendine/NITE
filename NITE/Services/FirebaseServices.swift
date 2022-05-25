@@ -136,11 +136,6 @@ class FirebaseServices {
     }
     
     func getUserProfile(_withUID uid: String, completion: @escaping (ErrorStatus?, PublicUserProfile?) -> ()) {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            completion(ErrorStatus(errorMsg: "User is not authenticated.", errorMessageType: .authError), nil)
-            return
-        }
-        
         let docRef = USER_COLLECTION.document(uid)
         docRef.getDocument { (document, error) in
             _ = Result {

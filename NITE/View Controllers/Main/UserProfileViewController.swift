@@ -204,6 +204,6 @@ extension UserProfileViewController: addImagesTableViewCellDelegate {
     }
     
     func didTapImageCell(image: taggedImageObject?) {
-        // SHOW IN FULL SCREEN
+        // TODO: SHOW IN FULL SCREEN
     }
 }

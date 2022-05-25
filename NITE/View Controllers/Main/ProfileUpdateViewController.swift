@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import SCSDKLoginKit
+import ViewAnimator
 
 struct profileUpdateData {
     var avatarImage: UIImage?
