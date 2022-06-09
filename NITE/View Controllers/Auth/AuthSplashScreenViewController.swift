@@ -40,8 +40,8 @@ class AuthSplashScreenViewController: UIViewController {
             
             if publicProfile != nil {
                 FirebaseServices.shared.setCurrentUserProfile(profile: publicProfile!)
-                
                 FirebaseServices.shared.initializeSendBirdUser()
+                IAPServices.configureRevCatUser()
                 
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let newVC = storyboard.instantiateViewController(withIdentifier: "MainNav")

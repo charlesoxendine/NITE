@@ -7,6 +7,7 @@
 
 import UIKit
 import SendBirdSDK
+import FirebaseFirestore
 
 enum UserProfileSections: Int {
     case profileImages
@@ -22,7 +23,7 @@ class UserProfileViewController: UIViewController {
     let sectionTitles = ["Images", "Bio"]
     
     var profileUserObj: PublicUserProfile?
-    var footerView: singleButtonFooterView?
+    var footerView: SingleButtonFooterView?
     var profileImages: [UIImage] = []
     
     override func viewDidLoad() {
@@ -31,7 +32,7 @@ class UserProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? singleButtonFooterView
+        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? SingleButtonFooterView
         footerView?.delegate = self
         footerView?.autoresizingMask = []
         footerView?.customTitle = "Unmatch"
@@ -52,7 +53,7 @@ class UserProfileViewController: UIViewController {
         }
         
         FirebaseServices.shared.getMatchData(userID1: otherUserUID, userID2: currentUserUID) { matchObject in
-            if matchObject?.matchDate.dateValue() ?? Date() < Date().advanced(by: -259200) {
+            if matchObject?.matchDate.compare(Timestamp(date: Date().advanced(by: -129600))) == .orderedDescending {
                 self.getProfileImages(showingPics: true)
             } else {
                 self.getProfileImages(showingPics: false)
@@ -69,11 +70,11 @@ class UserProfileViewController: UIViewController {
             self.setOnlyAvatar(avatarLocation: self.profileUserObj?.avatarImageLocation ?? "")
         } else {
             FirebaseServices.shared.getUserProfileImages(_withUID: userObj.id, _withImageIDs: userObj.imageLocations ?? []) { error, images in
-                var profileImages: [taggedImageObject] = images ?? []
+                var profileImages: [TaggedImageObject] = images ?? []
                 if let avatarURL = URL(string: FirebaseServices.shared.getCurrentUserProfile()?.avatarImageLocation ?? "") {
                     let data = try? Data(contentsOf: avatarURL)
                     let avatarImage = UIImage(data: data!)
-                    let taggedIMG = taggedImageObject(url: avatarURL.absoluteString, image: avatarImage)
+                    let taggedIMG = TaggedImageObject(url: avatarURL.absoluteString, image: avatarImage)
                     profileImages.insert(taggedIMG, at: 0)
                 }
                 
@@ -137,7 +138,7 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == UserProfileSections.profileImages.rawValue {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? addImagesTableViewCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? AddImagesTableViewCell {
                 cell.delegate = self
                 cell.cellImages = self.profileImages
                 return cell
@@ -203,7 +204,7 @@ extension UserProfileViewController: addImagesTableViewCellDelegate {
         print("[ALERT] This shouldn't be happening...")
     }
     
-    func didTapImageCell(image: taggedImageObject?) {
+    func didTapImageCell(image: TaggedImageObject?) {
         // TODO: SHOW IN FULL SCREEN
     }
 }

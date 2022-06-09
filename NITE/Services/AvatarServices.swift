@@ -26,15 +26,19 @@ class AvatarServices {
 
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-            if (error != nil) {
-                print(error)
-            } else {
-                let httpResponse = response as? HTTPURLResponse
-                if let jsonString = String(data: data!, encoding: .utf8) {
-                    if let jsonDict = self.convertToDictionary(text: jsonString) {
-                        if let token = jsonDict["token"] as? String {
-                            completion(nil, token)
-                        }
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            guard response != nil else {
+                return
+            }
+
+            if let jsonString = String(data: data!, encoding: .utf8) {
+                if let jsonDict = self.convertToDictionary(text: jsonString) {
+                    if let token = jsonDict["token"] as? String {
+                        completion(nil, token)
                     }
                 }
             }
@@ -43,7 +47,7 @@ class AvatarServices {
         dataTask.resume()
     }
     
-    func convertImageToAvatar(image: UIImage, completion: @escaping (ErrorStatus?, UIImage?) -> ()) {
+    func convertImageToAvatar(image: UIImage, completion: @escaping (ErrorStatus?, UIImage?) -> Void) {
         getAPIToken { error, token in
             if token != nil {
                 guard let imageURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("TempImage\(UUID().uuidString).png") else {
@@ -99,7 +103,7 @@ class AvatarServices {
                     
                     request.httpMethod = "POST"
                     request.allHTTPHeaderFields = headers as? [String: String]
-                    request.httpBody = postData as! Data
+                    request.httpBody = postData as Data
 
                     let session = URLSession.shared
                     let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

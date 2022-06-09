@@ -10,6 +10,7 @@ import Firebase
 import SCSDKLoginKit
 import SendBirdSDK
 import SendBirdUIKit
+import RevenueCat
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,8 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
-        let APP_ID = "29E0A5DC-4102-454D-ACB0-59EC1403BC17"
-        SBDMain.initWithApplicationId(APP_ID, useCaching: false) {
+        Purchases.logLevel = .debug
+        
+        let APPID = "29E0A5DC-4102-454D-ACB0-59EC1403BC17"
+        SBDMain.initWithApplicationId(APPID, useCaching: false) {
             print("Successfully initialized Sendbird application")
         } completionHandler: { error in
             print("[SENDBIRD] Error initializing app with message: \(error?.localizedDescription ?? "")")
@@ -34,7 +37,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rightBarButtonTintColor: .themeBlueGray()
         )
 
-        let channelTheme = SBUChannelTheme(leftBarButtonTintColor: .themeBlueGray(), rightBarButtonTintColor: .themeBlueGray(), menuTextColor: .themeBlueGray(), menuItemTintColor: .themeBlueGray(), channelStateBannerTextColor: .themeBlueGray(), channelStateBannerBackgroundColor: .themeBlueGray())
+        let channelTheme = SBUChannelTheme(leftBarButtonTintColor: .themeBlueGray(),
+                                           rightBarButtonTintColor: .themeBlueGray(),
+                                           menuTextColor: .themeBlueGray(),
+                                           menuItemTintColor: .themeBlueGray(),
+                                           channelStateBannerTextColor: .themeBlueGray(),
+                                           channelStateBannerBackgroundColor: .themeBlueGray())
         
         let listTheme = SBUMessageCellTheme(leftBackgroundColor: .themeLight(), rightBackgroundColor: .themeBlueGray(), userMessageLeftTextColor: .black, userMessageRightTextColor: .white)
         
@@ -68,4 +76,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
-

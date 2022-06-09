@@ -11,6 +11,7 @@ import FirebaseAuth
 import FirebaseFirestoreSwift
 import SendBirdSDK
 import SendBirdUIKit
+import RevenueCat
 
 class MainViewController: UIViewController {
 
@@ -28,7 +29,9 @@ class MainViewController: UIViewController {
         
         cardStack.dataSource = self
         cardStack.delegate = self
+        
         getData()
+        IAPServices.presentIAPViewController(vc: self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -81,7 +84,11 @@ class MainViewController: UIViewController {
         navBarAppearance.configureWithTransparentBackground()
         navBarAppearance.backgroundColor = .white
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.themeBlueGray(), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25)]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.themeBlueGray(), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25)]
+        navBarAppearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.themeBlueGray(),
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25)
+        ]
+        
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.standardAppearance = navBarAppearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
@@ -112,7 +119,7 @@ class MainViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: matchesButton)
     }
     
-    func toMatchView(matchUserProfile: PublicUserProfile) {
+    private func toMatchView(matchUserProfile: PublicUserProfile) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let newVC = storyboard.instantiateViewController(withIdentifier: "matchNotifViewController") as? MatchNotifViewController
         newVC?.modalPresentationStyle = .fullScreen
@@ -120,13 +127,13 @@ class MainViewController: UIViewController {
         self.present(newVC!, animated: true)
     }
     
-    @objc private func profileAction() -> Void {
+    @objc private func profileAction() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let newVC = storyboard.instantiateViewController(withIdentifier: "ProfileUpdateViewController") as? ProfileUpdateViewController
         self.navigationController?.pushViewController(newVC!, animated: true)
     }
     
-    @objc func matchesAction() -> Void {
+    @objc func matchesAction() {
         self.openChatList()
     }
     

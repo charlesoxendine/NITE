@@ -12,10 +12,10 @@ protocol GenderPrefSelectionViewControllerDelegate {
 }
 
 enum GenderPrefButtons: Int {
-    case Male
-    case Female
-    case MaleFemale
-    case Everyone
+    case male
+    case female
+    case maleFemale
+    case everyone
 }
 
 class GenderPrefSelectionViewController: UIViewController {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-fileprivate enum SignupField: Int {
+private enum SignupField: Int {
     case firstName
     case lastName
     case email
@@ -17,7 +17,7 @@ fileprivate enum SignupField: Int {
     case confirmPassword
 }
 
-struct signUpData {
+struct SignUpData {
     var firstName: String?
     var lastName: String?
     var email: String?
@@ -32,9 +32,9 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    private var newData = signUpData()
+    private var newData = SignUpData()
     
-    var footerView: singleButtonFooterView?
+    var footerView: SingleButtonFooterView?
     
     private let fieldCaptions = ["First name", "Last name", "Email", "Gender Identity", "Gender Preference", "Password", "Confirm password"]
     private let placeholders = ["Jane", "Doe", "email@email.com", "Gender Identity", "Who do you want to match with?", "Password", "Confirm Password"]
@@ -46,7 +46,7 @@ class SignUpViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? singleButtonFooterView
+        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? SingleButtonFooterView
         footerView?.delegate = self
         footerView?.autoresizingMask = []
         tableView.tableFooterView = footerView
@@ -222,7 +222,16 @@ extension SignUpViewController: singleButtonFooterViewDelegate {
             return
         }
         
-        let newProfile = PublicUserProfile(id: UUID().uuidString, firstName: self.newData.firstName, lastName: self.newData.lastName, description: nil, imageLocations:nil, avatarImageLocation: nil, interests: nil, geohash: nil, lat: nil, long: nil)
+        let newProfile = PublicUserProfile(id: UUID().uuidString,
+                                           firstName: self.newData.firstName,
+                                           lastName: self.newData.lastName,
+                                           description: nil,
+                                           imageLocations: nil,
+                                           avatarImageLocation: nil,
+                                           interests: nil,
+                                           geohash: nil,
+                                           lat: nil,
+                                           long: nil)
         
         self.showLoadingIndicator()
         FirebaseServices.shared.createUser(email: emailStringCleaned, password: self.newData.password!, newProfileData: newProfile) { error in

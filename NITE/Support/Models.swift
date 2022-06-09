@@ -99,7 +99,7 @@ struct DislikeData: Codable {
     }
 }
 
-struct matchData: Codable {
+struct MatchData: Codable {
     var users: [String]
     var matchDate: Timestamp
     
@@ -109,7 +109,7 @@ struct matchData: Codable {
     }
 }
 
-struct profileView: Codable {
+struct ProfileView: Codable {
     var profileViewedUID: String!
     var viewDate: Timestamp!
     
@@ -162,7 +162,7 @@ enum GenderIdentity: Int, Codable {
     }
 }
 
-struct taggedImageObject {
+struct TaggedImageObject {
     var url: String?
     var image: UIImage!
 }

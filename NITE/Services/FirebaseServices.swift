@@ -135,11 +135,11 @@ class FirebaseServices {
         }
     }
     
-    func getUserProfile(_withUID uid: String, completion: @escaping (ErrorStatus?, PublicUserProfile?) -> ()) {
+    func getUserProfile(_withUID uid: String, completion: @escaping (ErrorStatus?, PublicUserProfile?) -> Void) {
         let docRef = USER_COLLECTION.document(uid)
         docRef.getDocument { (document, error) in
             _ = Result {
-                try document.flatMap {
+                document.flatMap {
                     let data = try? $0.data(as: PublicUserProfile.self)
                     completion(nil, data)
                 }
@@ -147,7 +147,7 @@ class FirebaseServices {
         }
     }
     
-    func updateUserLocation(location: CLLocationCoordinate2D, completion: @escaping (ErrorStatus?) -> ()) {
+    func updateUserLocation(location: CLLocationCoordinate2D, completion: @escaping (ErrorStatus?) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -171,7 +171,7 @@ class FirebaseServices {
         }
     }
     
-    func getAvatarImage(_withUID uid: String, completion: @escaping (ErrorStatus?, UIImage?) -> ()) {
+    func getAvatarImage(_withUID uid: String, completion: @escaping (ErrorStatus?, UIImage?) -> Void) {
         let storageRef = storage.reference()
         let avatarImagesRef = storageRef.child("avatarIMGs/\(uid).png")
         
@@ -185,7 +185,7 @@ class FirebaseServices {
         }
     }
     
-    func updateAvatarImage(_withUID uid: String, avatarIMG: UIImage, completion: @escaping (ErrorStatus?) -> ()) {
+    func updateAvatarImage(_withUID uid: String, avatarIMG: UIImage, completion: @escaping (ErrorStatus?) -> Void) {
         let storageRef = storage.reference()
         let avatarImagesRef = storageRef.child("avatarIMGs/\(uid).png")
         
@@ -209,7 +209,7 @@ class FirebaseServices {
         }
     }
     
-    func addProfileImage(profileImage: UIImage, completion: @escaping (ErrorStatus?) -> ()) {
+    func addProfileImage(profileImage: UIImage, completion: @escaping (ErrorStatus?) -> Void) {
         let storageRef = storage.reference()
         
         if let uid = Auth.auth().currentUser?.uid {
@@ -218,7 +218,7 @@ class FirebaseServices {
             
             if let data = profileImage.pngData() {
                 profileImagesRef.putData(data, metadata: nil) { (metadata, error) in
-                    guard let _ = metadata else {
+                    guard metadata != nil else {
                         completion(ErrorStatus(errorMsg: error?.localizedDescription, errorMessageType: .internalError))
                         return
                     }
@@ -250,8 +250,8 @@ class FirebaseServices {
         }
     }
     
-    func getUserProfileImages(_withUID uid: String,_withImageIDs urls: [String], completion: @escaping (ErrorStatus?, [taggedImageObject]?) -> ()) {
-        var images: [taggedImageObject] = []
+    func getUserProfileImages(_withUID uid: String, _withImageIDs urls: [String], completion: @escaping (ErrorStatus?, [TaggedImageObject]?) -> Void) {
+        var images: [TaggedImageObject] = []
         
         let group = DispatchGroup()
         
@@ -261,7 +261,7 @@ class FirebaseServices {
                 let data = try? Data(contentsOf: URL(string: url)!)
                 DispatchQueue.main.async {
                     let image = UIImage(data: data!) ?? UIImage()
-                    let imagePair = taggedImageObject(url: url, image: image)
+                    let imagePair = TaggedImageObject(url: url, image: image)
                     images.append(imagePair)
                     group.leave()
                 }
@@ -278,7 +278,7 @@ class FirebaseServices {
         try? Auth.auth().signOut()
     }
     
-    func logLikeData(likedUserUID: String, completion: @escaping (ErrorStatus?) -> ()) {
+    func logLikeData(likedUserUID: String, completion: @escaping (ErrorStatus?) -> Void) {
         do {
             let likeUUID = UUID().uuidString
             guard let userUID = Auth.auth().currentUser?.uid else {
@@ -294,7 +294,7 @@ class FirebaseServices {
         }
     }
     
-    func createMessageChannelForMatch(otherUserUID: String, completion: @escaping (ErrorStatus?) -> ()) {
+    func createMessageChannelForMatch(otherUserUID: String, completion: @escaping (ErrorStatus?) -> Void) {
         guard let userUID = Auth.auth().currentUser?.uid else {
             return
         }
@@ -331,7 +331,7 @@ class FirebaseServices {
         }
         
         SBDMain.connect(withUserId: userID) { user, error in
-            guard let user = user, error == nil else {
+            guard let _ = user, error == nil else {
                 return
             }
             
@@ -353,7 +353,7 @@ class FirebaseServices {
         }
     }
     
-    func logDislikeData(dislikedUserUID: String, completion: @escaping (ErrorStatus?) -> ()) {
+    func logDislikeData(dislikedUserUID: String, completion: @escaping (ErrorStatus?) -> Void) {
         do {
             let dislikeUUID = UUID().uuidString
             guard let userUID = Auth.auth().currentUser?.uid else {
@@ -369,13 +369,13 @@ class FirebaseServices {
         }
     }
         
-    func getMatchData(userID1: String, userID2: String, completion: @escaping (matchData?) -> ()) {
+    func getMatchData(userID1: String, userID2: String, completion: @escaping (MatchData?) -> Void) {
         let docRef = MATCH_DATA_COLLECTION.whereField("users", arrayContains: userID1)
         docRef.getDocuments { snap, error in
             if let snapshotDocuments = snap?.documents {
                 for document in snapshotDocuments {
                     do {
-                        if let matchDataObj = try? document.data(as: matchData.self) {
+                        if let matchDataObj = try? document.data(as: MatchData.self) {
                             print(matchDataObj.matchDate)
                             if matchDataObj.users.contains(where: { $0 == userID2 }) {
                                 completion(matchDataObj)
@@ -391,14 +391,14 @@ class FirebaseServices {
         }
     }
     
-    func logMatchData(otherUserMatchedWith: String, completion: @escaping (ErrorStatus?) -> ()) {
+    func logMatchData(otherUserMatchedWith: String, completion: @escaping (ErrorStatus?) -> Void) {
         do {
             guard let userUID = Auth.auth().currentUser?.uid else {
                 return
             }
             
             let matchUUID = UUID().uuidString
-            let matchObj = matchData(users: [userUID, otherUserMatchedWith], matchDate: Timestamp(date: Date()))
+            let matchObj = MatchData(users: [userUID, otherUserMatchedWith], matchDate: Timestamp(date: Date()))
             try MATCH_DATA_COLLECTION.document(matchUUID).setData(from: matchObj, merge: true)
             createMessageChannelForMatch(otherUserUID: otherUserMatchedWith) { errorStatus in
                 completion(errorStatus)
@@ -409,7 +409,7 @@ class FirebaseServices {
         }
     }
     
-    func logSeen(seenUID: String, completion: @escaping (ErrorStatus?) -> ()) {
+    func logSeen(seenUID: String, completion: @escaping (ErrorStatus?) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -425,7 +425,7 @@ class FirebaseServices {
         })
     }
     
-    func checkIfSeen(seenUID: String, completion: @escaping (ErrorStatus?, Bool?) -> ()) {
+    func checkIfSeen(seenUID: String, completion: @escaping (ErrorStatus?, Bool?) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -445,7 +445,7 @@ class FirebaseServices {
         }
     }
     
-    func checkForMatch(otherUserUID: String, completion: @escaping (ErrorStatus?, Bool?) -> ()) {
+    func checkForMatch(otherUserUID: String, completion: @escaping (ErrorStatus?, Bool?) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }

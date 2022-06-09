@@ -18,6 +18,9 @@ target 'NITE' do
   pod 'GeoFire/Utils'
   pod 'SnapSDK', :subspecs => ['SCSDKLoginKit', 'SCSDKCreativeKit', 'SCSDKBitmojiKit']
   pod 'SendBirdUIKit'
+  pod 'SwiftLint'
+  pod 'RevenueCat'
+  pod 'lottie-ios'
   
   target 'NITETests' do
     inherit! :search_paths

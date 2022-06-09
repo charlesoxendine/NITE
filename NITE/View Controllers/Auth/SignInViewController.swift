@@ -7,12 +7,12 @@
 
 import UIKit
 
-fileprivate enum SignInField: Int {
+private enum SignInField: Int {
     case email
     case password
 }
 
-struct signInData {
+struct SignInData {
     var email: String?
     var password: String?
 }
@@ -22,8 +22,8 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    private var newData = signInData()
-    private var footerView: singleButtonFooterView?
+    private var newData = SignInData()
+    private var footerView: SingleButtonFooterView?
     
     private let fieldCaptions = ["Email", "Password"]
     private let placeholders = ["email@domain.com", "Password"]
@@ -35,7 +35,7 @@ class SignInViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? singleButtonFooterView
+        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? SingleButtonFooterView
         footerView?.delegate = self
         footerView?.autoresizingMask = []
         tableView.tableFooterView = footerView

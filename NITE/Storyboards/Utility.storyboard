@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -68,10 +68,119 @@
             </objects>
             <point key="canvasLocation" x="-465" y="94"/>
         </scene>
+        <!--In App Purchases View Controller-->
+        <scene sceneID="OZz-gf-Pbn">
+            <objects>
+                <viewController storyboardIdentifier="InAppPurchasesViewController" id="pee-YA-fOf" customClass="InAppPurchasesViewController" customModule="NITE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4Sx-w3-PTh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Double the Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jwz-Oq-oLG">
+                                <rect key="frame" x="106.5" y="269" width="201" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="and get off this app quicker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EL5-pX-Iu5">
+                                <rect key="frame" x="87.5" y="313" width="239" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KH9-hT-ei5">
+                                <rect key="frame" x="20" y="357" width="374" height="81.5"/>
+                                <string key="text">We just have this one plan. No gimmicks, referrals, scams, annual plans, platinum, gold, blah blah blah. Just double the likes. There is no pay to play.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1CD-dQ-0to">
+                                <rect key="frame" x="20" y="458.5" width="374" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="gpe-yS-n9i"/>
+                                </constraints>
+                                <color key="tintColor" red="0.96449643370000004" green="0.9687036872" blue="0.96855813260000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Continue">
+                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="18"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="continueTapped:" destination="pee-YA-fOf" eventType="touchUpInside" id="0qr-Gm-wZe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Zm-9L-vN1">
+                                <rect key="frame" x="30" y="74" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="2ZI-rN-wkm"/>
+                                    <constraint firstAttribute="width" constant="35" id="zMO-IS-el3"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="xmark.circle" catalog="system" title=""/>
+                                <connections>
+                                    <action selector="closeViewTapped:" destination="pee-YA-fOf" eventType="touchUpInside" id="4Ka-PW-p88"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00 / mo" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rfN-uA-eVu">
+                                <rect key="frame" x="20" y="840" width="374" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLI-rK-ZeD" customClass="AnimationView" customModule="Lottie">
+                                <rect key="frame" x="25" y="129" width="364" height="130"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="130" id="RC3-Fv-WGB"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="couple_bench"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="rkd-pc-2gE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="1CD-dQ-0to" firstAttribute="top" secondItem="KH9-hT-ei5" secondAttribute="bottom" constant="20" id="16v-gn-E7i"/>
+                            <constraint firstItem="hLI-rK-ZeD" firstAttribute="top" secondItem="9Zm-9L-vN1" secondAttribute="bottom" constant="20" id="3rT-uS-VOY"/>
+                            <constraint firstItem="rkd-pc-2gE" firstAttribute="trailing" secondItem="hLI-rK-ZeD" secondAttribute="trailing" constant="25" id="8u2-Xq-rrT"/>
+                            <constraint firstItem="jwz-Oq-oLG" firstAttribute="top" secondItem="hLI-rK-ZeD" secondAttribute="bottom" constant="10" id="DIh-g8-4uo"/>
+                            <constraint firstItem="KH9-hT-ei5" firstAttribute="top" secondItem="EL5-pX-Iu5" secondAttribute="bottom" constant="20" id="Foc-1a-aof"/>
+                            <constraint firstItem="KH9-hT-ei5" firstAttribute="leading" secondItem="rkd-pc-2gE" secondAttribute="leading" constant="20" id="G1L-ZO-fM7"/>
+                            <constraint firstItem="EL5-pX-Iu5" firstAttribute="top" secondItem="jwz-Oq-oLG" secondAttribute="bottom" constant="10" id="P4j-8S-7nu"/>
+                            <constraint firstItem="1CD-dQ-0to" firstAttribute="leading" secondItem="rkd-pc-2gE" secondAttribute="leading" constant="20" id="SBx-Fk-lUt"/>
+                            <constraint firstItem="9Zm-9L-vN1" firstAttribute="leading" secondItem="rkd-pc-2gE" secondAttribute="leading" constant="30" id="cfS-LO-BuP"/>
+                            <constraint firstItem="rkd-pc-2gE" firstAttribute="trailing" secondItem="KH9-hT-ei5" secondAttribute="trailing" constant="20" id="cse-MN-yCj"/>
+                            <constraint firstItem="rkd-pc-2gE" firstAttribute="trailing" secondItem="1CD-dQ-0to" secondAttribute="trailing" constant="20" id="eYT-CX-HNB"/>
+                            <constraint firstItem="EL5-pX-Iu5" firstAttribute="centerX" secondItem="4Sx-w3-PTh" secondAttribute="centerX" id="jOU-WF-A0F"/>
+                            <constraint firstItem="9Zm-9L-vN1" firstAttribute="top" secondItem="rkd-pc-2gE" secondAttribute="top" constant="30" id="kqJ-X8-e6H"/>
+                            <constraint firstItem="jwz-Oq-oLG" firstAttribute="centerX" secondItem="4Sx-w3-PTh" secondAttribute="centerX" id="mOp-NW-6qM"/>
+                            <constraint firstItem="hLI-rK-ZeD" firstAttribute="leading" secondItem="rkd-pc-2gE" secondAttribute="leading" constant="25" id="puC-uu-vsk"/>
+                            <constraint firstItem="rfN-uA-eVu" firstAttribute="leading" secondItem="rkd-pc-2gE" secondAttribute="leading" constant="20" id="rXv-cL-cQX"/>
+                            <constraint firstItem="rkd-pc-2gE" firstAttribute="bottom" secondItem="rfN-uA-eVu" secondAttribute="bottom" constant="5" id="tpB-b8-eUS"/>
+                            <constraint firstItem="rkd-pc-2gE" firstAttribute="trailing" secondItem="rfN-uA-eVu" secondAttribute="trailing" constant="20" id="wSD-59-LF0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="animationUIView" destination="hLI-rK-ZeD" id="ZA7-Rc-8on"/>
+                        <outlet property="continueButton" destination="1CD-dQ-0to" id="9AZ-Fh-qUi"/>
+                        <outlet property="costLabel" destination="rfN-uA-eVu" id="qsc-N3-6xI"/>
+                        <outlet property="offerDescriptionButton" destination="rfN-uA-eVu" id="K4u-ZF-Ewj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hwI-u1-RmJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="789.85507246376812" y="-258.48214285714283"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -10,9 +10,9 @@ import FirebaseAuth
 import SCSDKLoginKit
 import ViewAnimator
 
-struct profileUpdateData {
+struct ProfileUpdateData {
     var avatarImage: UIImage?
-    var profilePictures: [taggedImageObject]?
+    var profilePictures: [TaggedImageObject]?
     var firstName: String?
     var lastName: String?
     var description: String?
@@ -36,9 +36,9 @@ class ProfileUpdateViewController: UIViewController {
     private let fieldKeyboardTypes: [UIKeyboardType] = [.default, .default, .default, .numberPad, .default, .default]
     
     @IBOutlet weak var tableView: UITableView!
-    var footerView: singleButtonFooterView?
+    var footerView: SingleButtonFooterView?
     
-    var newData: profileUpdateData?
+    var newData: ProfileUpdateData?
     var newImages: [UIImage] = []
     var deletedURLs: [String] = []
     
@@ -48,7 +48,7 @@ class ProfileUpdateViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? singleButtonFooterView
+        self.footerView = Bundle.main.loadNibNamed("singleButtonFooterView", owner: self, options: nil)?.first as? SingleButtonFooterView
         footerView?.delegate = self
         footerView?.autoresizingMask = []
         tableView.tableFooterView = footerView
@@ -67,7 +67,13 @@ class ProfileUpdateViewController: UIViewController {
             return
         }
         
-        let data = profileUpdateData(avatarImage: nil, profilePictures: nil, firstName: user.firstName, lastName: user.lastName, description: user.description, genderIdentity: user.genderIdentity?.rawValue, genderPreferences: user.genderPreference?.rawValue)
+        let data = ProfileUpdateData(avatarImage: nil,
+                                     profilePictures: nil,
+                                     firstName: user.firstName,
+                                     lastName: user.lastName,
+                                     description: user.description,
+                                     genderIdentity: user.genderIdentity?.rawValue,
+                                     genderPreferences: user.genderPreference?.rawValue)
         self.newData = data
         self.tableView.reloadData()
     }
@@ -75,11 +81,11 @@ class ProfileUpdateViewController: UIViewController {
     func setCurrentStoredUserProfiles() {
         if let uid = Auth.auth().currentUser?.uid {
             FirebaseServices.shared.getUserProfileImages(_withUID: uid, _withImageIDs: FirebaseServices.shared.getCurrentUserProfile()?.imageLocations ?? []) { error, images in
-                var profileImages: [taggedImageObject] = images ?? []
+                var profileImages: [TaggedImageObject] = images ?? []
                 if let avatarURL = URL(string: FirebaseServices.shared.getCurrentUserProfile()?.avatarImageLocation ?? "") {
-                    let data = try? Data(contentsOf: avatarURL) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+                    let data = try? Data(contentsOf: avatarURL) // make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     let avatarImage = UIImage(data: data!)
-                    let taggedIMG = taggedImageObject(url: avatarURL.absoluteString, image: avatarImage)
+                    let taggedIMG = TaggedImageObject(url: avatarURL.absoluteString, image: avatarImage)
                     profileImages.insert(taggedIMG, at: 0)
                 }
                 
@@ -172,7 +178,7 @@ extension ProfileUpdateViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == ProfileFields.imagesField.rawValue {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? addImagesTableViewCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? AddImagesTableViewCell {
                 cell.delegate = self
                 cell.cellImagesTagged = self.newData?.profilePictures ?? []
                 return cell
@@ -273,9 +279,9 @@ extension ProfileUpdateViewController: singleButtonFooterViewDelegate {
             return
         }
         
-        var taggedImageObjects: [taggedImageObject] = []
+        var taggedImageObjects: [TaggedImageObject] = []
         for imageObj in newImages {
-            let taggedObj = taggedImageObject(image: imageObj)
+            let taggedObj = TaggedImageObject(image: imageObj)
             taggedImageObjects.append(taggedObj)
         }
         
@@ -311,7 +317,7 @@ extension ProfileUpdateViewController: addImagesTableViewCellDelegate {
         self.present(pickerController, animated: true)
     }
     
-    func didTapImageCell(image: taggedImageObject?) {
+    func didTapImageCell(image: TaggedImageObject?) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         guard image != nil else {
@@ -319,7 +325,7 @@ extension ProfileUpdateViewController: addImagesTableViewCellDelegate {
                 self.newData?.profilePictures = []
             }
             
-            let taggedObj = taggedImageObject(image: image?.image!)
+            let taggedObj = TaggedImageObject(image: image?.image!)
             self.newData?.profilePictures?.append(taggedObj)
             let index = IndexPath(row: ProfileFields.imagesField.rawValue, section: 0)
             self.tableView.reloadRows(at: [index], with: .fade) 
@@ -351,7 +357,7 @@ extension ProfileUpdateViewController: UINavigationControllerDelegate, UIImagePi
         picker.dismiss(animated: true)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let image = info[.originalImage] as? UIImage {
             picker.dismiss(animated: true)
             
@@ -359,7 +365,7 @@ extension ProfileUpdateViewController: UINavigationControllerDelegate, UIImagePi
                 newData?.profilePictures = []
             }
             
-            let taggedObj = taggedImageObject(image: image)
+            let taggedObj = TaggedImageObject(image: image)
             
             self.newData?.profilePictures!.append(taggedObj)
             self.newImages.append(image)
