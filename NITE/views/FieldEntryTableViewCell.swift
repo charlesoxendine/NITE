@@ -13,9 +13,9 @@ protocol FieldEntryTableViewCellDelegate {
 
 class FieldEntryTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var captionLabel:    UILabel!
-    @IBOutlet weak var textField:       UITextField!
-    @IBOutlet weak var lineView:        UIView!
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var rightArrow: UIImageView!
     @IBOutlet weak var showPwd: UIImageView!
     

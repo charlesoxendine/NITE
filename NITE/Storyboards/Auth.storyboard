@@ -53,19 +53,33 @@
                                     <action selector="signInTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Fqz-Kw-bga"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jvj-yY-HXq" customClass="AnimationView" customModule="Lottie">
+                                <rect key="frame" x="25" y="228" width="364" height="280"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="280" id="3Lq-Lg-Qar"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="pinky_love"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="jvj-yY-HXq" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="25" id="0Eh-3U-Rgb"/>
                             <constraint firstItem="srJ-FK-N2z" firstAttribute="top" secondItem="Qh5-SJ-emF" secondAttribute="bottom" id="681-cY-agF"/>
                             <constraint firstItem="Qh5-SJ-emF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="25" id="8IN-UK-CSq"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="srJ-FK-N2z" secondAttribute="bottom" constant="20" id="BFa-Hw-oER"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Qh5-SJ-emF" secondAttribute="trailing" constant="25" id="Isy-eA-VcF"/>
                             <constraint firstItem="srJ-FK-N2z" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="Y7J-Ha-Z2I"/>
+                            <constraint firstItem="jvj-yY-HXq" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" constant="-80" id="bv4-GE-L56"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="jvj-yY-HXq" secondAttribute="trailing" constant="25" id="zx3-vh-pN1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lDf-q0-7AL"/>
                     <connections>
+                        <outlet property="animationView" destination="jvj-yY-HXq" id="5E8-Ns-dwc"/>
                         <outlet property="signInButton" destination="srJ-FK-N2z" id="TcX-3w-cv1"/>
                         <outlet property="signUpButton" destination="Qh5-SJ-emF" id="zar-hx-QfR"/>
                     </connections>
@@ -231,6 +245,9 @@
             <point key="canvasLocation" x="1829" y="-380"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="jvj-yY-HXq"/>
+    </designables>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

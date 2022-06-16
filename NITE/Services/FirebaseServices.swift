@@ -17,7 +17,6 @@ import SendBirdSDK
 import SendBirdUIKit
 
 class FirebaseServices {
-    
     private var currentUserProfile: PublicUserProfile?
 
     private let USER_COLLECTION = Firestore.firestore().collection("users")
@@ -36,7 +35,7 @@ class FirebaseServices {
     
     public static let shared = FirebaseServices()
     
-    func createUser(email: String, password: String, newProfileData: PublicUserProfile, completion: @escaping (ErrorStatus?) -> ()) {
+    func createUser(email: String, password: String, newProfileData: PublicUserProfile, completion: @escaping (ErrorStatus?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             guard error == nil else {
                 completion(ErrorStatus(errorMsg: error?.localizedDescription, errorMessageType: nil))
@@ -64,7 +63,7 @@ class FirebaseServices {
         }
     }
     
-    func loginUser(email: String, password: String, completion: @escaping (ErrorStatus?, Bool) -> ()) {
+    func loginUser(email: String, password: String, completion: @escaping (ErrorStatus?, Bool) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { auth, error in
             if let error = error {
                 completion(ErrorStatus(errorMsg: error.localizedDescription, errorMessageType: .none), false)
@@ -92,7 +91,7 @@ class FirebaseServices {
         }
     }
     
-    func updateDataBaseUserProfile(_withUID uid: String, newProfileImages: [UIImage]?, updatedProfileData: PublicUserProfile, deletedImagesURLS: [String]?, completion: @escaping (ErrorStatus?) -> ()) {
+    func updateDataBaseUserProfile(_withUID uid: String, newProfileImages: [UIImage]?, updatedProfileData: PublicUserProfile, deletedImagesURLS: [String]?, completion: @escaping (ErrorStatus?) -> Void) {
         do {
             var updatedProfile = updatedProfileData
             if let deletedImagesURLS = deletedImagesURLS {
@@ -191,7 +190,7 @@ class FirebaseServices {
         
         if let data = avatarIMG.pngData() {
             avatarImagesRef.putData(data, metadata: nil) { (metadata, error) in
-                guard let _ = metadata else {
+                guard metadata != nil else {
                     completion(ErrorStatus(errorMsg: error?.localizedDescription, errorMessageType: .internalError))
                     return
                 }
@@ -203,7 +202,18 @@ class FirebaseServices {
                     }
                     
                     self.currentUserProfile?.avatarImageLocation = downloadURL.absoluteString
-                    completion(nil)
+                    guard let user = self.currentUserProfile else {
+                        return
+                    }
+                    
+                    self.updateDataBaseUserProfile(_withUID: user.id, newProfileImages: [], updatedProfileData: user, deletedImagesURLS: []) { errorStatus in
+                        if let errorStatus = errorStatus {
+                            completion(errorStatus)
+                            return
+                        }
+                        
+                        completion(nil)
+                    }
                 }
             }
         }
@@ -331,7 +341,7 @@ class FirebaseServices {
         }
         
         SBDMain.connect(withUserId: userID) { user, error in
-            guard let _ = user, error == nil else {
+            guard user != nil, error == nil else {
                 return
             }
             
@@ -372,19 +382,18 @@ class FirebaseServices {
     func getMatchData(userID1: String, userID2: String, completion: @escaping (MatchData?) -> Void) {
         let docRef = MATCH_DATA_COLLECTION.whereField("users", arrayContains: userID1)
         docRef.getDocuments { snap, error in
-            if let snapshotDocuments = snap?.documents {
-                for document in snapshotDocuments {
-                    do {
-                        if let matchDataObj = try? document.data(as: MatchData.self) {
-                            print(matchDataObj.matchDate)
-                            if matchDataObj.users.contains(where: { $0 == userID2 }) {
-                                completion(matchDataObj)
-                                return
-                            }
+            guard let snapshotDocuments = snap?.documents else {
+                return
+            }
+            
+            for document in snapshotDocuments {
+                do {
+                    if let matchDataObj = try? document.data(as: MatchData.self) {
+                        print(matchDataObj.matchDate)
+                        if matchDataObj.users.contains(where: { $0 == userID2 }) {
+                            completion(matchDataObj)
+                            return
                         }
-                    } catch let error as NSError {
-                        print("error: \(error.localizedDescription)")
-                        completion(nil)
                     }
                 }
             }
@@ -465,12 +474,18 @@ class FirebaseServices {
         }
     }
     
-    func getNextFiveProfiles(completion: @escaping (ErrorStatus?, [PublicUserProfile]?) -> ()) {
+    func getNextFiveProfiles(completion: @escaping (ErrorStatus?, [PublicUserProfile]?) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
         
         guard let currentUserGenderPref = self.currentUserProfile?.genderPreference else {
+            completion(ErrorStatus(errorMsg: "Finish setting up your profile with a gender preference before you can start swiping.", errorMessageType: .none), nil)
+            return
+        }
+        
+        guard let _ = self.currentUserProfile?.avatarImageLocation else {
+            completion(ErrorStatus(errorMsg: "To start swiping, you have to login to your snapchat account! This way people can see that cool bitmoji", errorMessageType: .none), nil)
             return
         }
         
@@ -530,6 +545,29 @@ class FirebaseServices {
             
             group.notify(queue: .main) {
                 completion(nil, newProfiles)
+            }
+        }
+    }
+    
+    // returns true if user has likes left for the day
+    func checkLikeCount(completion: @escaping (Bool) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let startOfDay: Date = Calendar.current.startOfDay(for: Date())
+        let query = LIKE_DATA_COLLECTION.whereField("likingUserUID", isEqualTo: uid).whereField("date", isGreaterThan: startOfDay)
+        query.getDocuments { snap, error in
+            if let error = error {
+                completion(false)
+                print(error.localizedDescription)
+                return
+            }
+            
+            if snap?.documents.count ?? 0 <= BASIC_PLAN_LIKE_LIMIT {
+                completion(true)
+            } else {
+                completion(false)
             }
         }
     }

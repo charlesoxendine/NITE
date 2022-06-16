@@ -7,14 +7,19 @@
 
 import UIKit
 import FirebaseAuth
+import Lottie
 
 class AuthSplashScreenViewController: UIViewController {
 
     @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var animationView: AnimationView!
     @IBOutlet weak var signUpButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        animationView.loopMode = .autoReverse
+        animationView.play()
         
         setUI()
     }

@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 import SendBirdSDK
 import SendBirdUIKit
 import RevenueCat
+import SCSDKLoginKit
 
 class MainViewController: UIViewController {
 
@@ -31,7 +32,6 @@ class MainViewController: UIViewController {
         cardStack.delegate = self
         
         getData()
-        IAPServices.presentIAPViewController(vc: self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -70,6 +70,34 @@ class MainViewController: UIViewController {
             self.cardData = profileData
             self.cardStack.reloadData()
         }
+    }
+    
+    func checkSwipeEligibility(completion: (()->(Void))?) {
+        guard FirebaseServices.shared.getCurrentUserProfile()?.avatarImageLocation != nil else {
+            return
+        }
+        
+        guard SCSDKLoginClient.isUserLoggedIn == true else {
+            self.showSnapReauthScreen()
+            return
+        }
+        
+        completion?()
+    }
+    
+    func showSnapReauthScreen() {
+        let alert = UIAlertController(title: "Oops!", message: "It seems you're logged out of Snapchat! Lets get you reconnected to start scrolling!", preferredStyle: .alert)
+        let reconnectAction = UIAlertAction(title: "Reconnect", style: .default) { action in
+            SCSDKLoginClient.login(from: self) { (success: Bool, error: Error?) in
+                if success == true {
+                    return
+                }
+            }
+        }
+        let closeAction = UIAlertAction(title: "Close", style: .cancel)
+        alert.addAction(closeAction)
+        alert.addAction(reconnectAction)
+        self.present(alert, animated: true)
     }
     
     func addShadowTo(_view view: UIView) {
@@ -161,48 +189,57 @@ extension MainViewController: SwipeCardStackDataSource, SwipeCardStackDelegate {
     func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
         let userData = cardData[index]
         
-        FirebaseServices.shared.logSeen(seenUID: userData.id) { error in
-            if let error = error {
-                self.showErrorMessage(message: error.errorMsg)
-                return
-                
-            }
-            
-            if direction == .left {
-                FirebaseServices.shared.logDislikeData(dislikedUserUID: userData.id) { errorStatus in
-                    if errorStatus != nil {
-                        self.showErrorMessage(message: errorStatus!.errorMsg)
-                        return
-                    }
+        self.checkSwipeEligibility {
+            FirebaseServices.shared.checkLikeCount { likesLeft in
+                guard likesLeft == true else {
+                    IAPServices.presentIAPViewController(vc: self)
+                    return
                 }
-            } else {
-                FirebaseServices.shared.checkForMatch(otherUserUID: userData.id) { error, match in
-                    if error != nil {
-                        self.showErrorMessage(message: error!.errorMsg)
+                
+                FirebaseServices.shared.logSeen(seenUID: userData.id) { error in
+                    if let error = error {
+                        self.showErrorMessage(message: error.errorMsg)
                         return
+                        
                     }
                     
-                    if match == true {
-                        // SHOW MATCH VIEW AND LOG MATCH
-                        print("It's a match!!")
-                        self.showLoadingIndicator()
-                        FirebaseServices.shared.logMatchData(otherUserMatchedWith: userData.id) { errorStatus in
-                            self.removeLoadingIndicator()
+                    if direction == .left {
+                        FirebaseServices.shared.logDislikeData(dislikedUserUID: userData.id) { errorStatus in
                             if errorStatus != nil {
                                 self.showErrorMessage(message: errorStatus!.errorMsg)
                                 return
                             }
-                            
-                            self.toMatchView(matchUserProfile: userData)
                         }
-                        
-                        return
-                    }
-                    
-                    FirebaseServices.shared.logLikeData(likedUserUID: userData.id) { errorStatus in
-                        if errorStatus != nil {
-                            self.showErrorMessage(message: errorStatus!.errorMsg)
-                            return
+                    } else {
+                        FirebaseServices.shared.checkForMatch(otherUserUID: userData.id) { error, match in
+                            if error != nil {
+                                self.showErrorMessage(message: error!.errorMsg)
+                                return
+                            }
+                            
+                            if match == true {
+                                // SHOW MATCH VIEW AND LOG MATCH
+                                print("It's a match!!")
+                                self.showLoadingIndicator()
+                                FirebaseServices.shared.logMatchData(otherUserMatchedWith: userData.id) { errorStatus in
+                                    self.removeLoadingIndicator()
+                                    if errorStatus != nil {
+                                        self.showErrorMessage(message: errorStatus!.errorMsg)
+                                        return
+                                    }
+                                    
+                                    self.toMatchView(matchUserProfile: userData)
+                                }
+                                
+                                return
+                            }
+                            
+                            FirebaseServices.shared.logLikeData(likedUserUID: userData.id) { errorStatus in
+                                if errorStatus != nil {
+                                    self.showErrorMessage(message: errorStatus!.errorMsg)
+                                    return
+                                }
+                            }
                         }
                     }
                 }

@@ -9,6 +9,8 @@ import Foundation
 import RevenueCat
 import FirebaseAuth
 
+let BASIC_PLAN_LIKE_LIMIT = 5
+
 struct IAPServices {
     
     public static let doubleLikesPackageID = "more_likes_offering"

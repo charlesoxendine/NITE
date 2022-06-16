@@ -22,6 +22,7 @@ struct ProfileUpdateData {
 
 enum ProfileFields: Int {
     case imagesField
+    case snapchatLoginManager
     case description
     case genderIdentity
     case genderPreferences
@@ -31,8 +32,8 @@ enum ProfileFields: Int {
 
 class ProfileUpdateViewController: UIViewController {
 
-    private let fieldCaptions = ["IMAGE", "Description", "Gender Identity", "Gender Preferences", "First Name", "Last Name"]
-    private let placeholders = ["IMAGE", "Description", "Gender Identity", "Who do you want to match with?", "Jane", "Doe"]
+    private let fieldCaptions = ["IMAGE", "SNAPCHAT MANAGER", "Description", "Gender Identity", "Gender Preferences", "First Name", "Last Name"]
+    private let placeholders = ["IMAGE", "SNAPCHAT MANAGER", "Description", "Gender Identity", "Who do you want to match with?", "Jane", "Doe"]
     private let fieldKeyboardTypes: [UIKeyboardType] = [.default, .default, .default, .numberPad, .default, .default]
     
     @IBOutlet weak var tableView: UITableView!
@@ -41,6 +42,7 @@ class ProfileUpdateViewController: UIViewController {
     var newData: ProfileUpdateData?
     var newImages: [UIImage] = []
     var deletedURLs: [String] = []
+    var avatarImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +55,7 @@ class ProfileUpdateViewController: UIViewController {
         footerView?.autoresizingMask = []
         tableView.tableFooterView = footerView
         
-        ["FieldEntryTableViewCell", "addImagesTableViewCell"].forEach( {
+        ["FieldEntryTableViewCell", "addImagesTableViewCell", "AddSnapchatTableViewCell"].forEach( {
             tableView.register(UINib.init(nibName: $0, bundle: nil), forCellReuseIdentifier: $0)
         })
         
@@ -86,6 +88,7 @@ class ProfileUpdateViewController: UIViewController {
                     let data = try? Data(contentsOf: avatarURL) // make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     let avatarImage = UIImage(data: data!)
                     let taggedIMG = TaggedImageObject(url: avatarURL.absoluteString, image: avatarImage)
+                    self.avatarImage = avatarImage
                     profileImages.insert(taggedIMG, at: 0)
                 }
                 
@@ -139,9 +142,17 @@ class ProfileUpdateViewController: UIViewController {
         case ProfileFields.description.rawValue:
             cell.textField.text = self.newData?.description ?? ""
         case ProfileFields.genderIdentity.rawValue:
-            cell.textField.text = GenderIdentity(rawValue: self.newData?.genderIdentity ?? 0)?.getGenderIdentityName()
+            if let genderIdentityInt = self.newData?.genderIdentity {
+                cell.textField.text = GenderIdentity(rawValue: genderIdentityInt)?.getGenderIdentityName()
+            } else {
+                cell.textField.text = ""
+            }
         case ProfileFields.genderPreferences.rawValue:
-            cell.textField.text = GenderPreference(rawValue: self.newData?.genderPreferences ?? 0)?.getGenderPreferenceName()
+            if let genderPrefInt = self.newData?.genderPreferences {
+                cell.textField.text = GenderPreference(rawValue: genderPrefInt)?.getGenderPreferenceName()
+            } else {
+                cell.textField.text = ""
+            }
         default:
             print("Fatal Error")
         }
@@ -181,6 +192,13 @@ extension ProfileUpdateViewController: UITableViewDelegate, UITableViewDataSourc
             if let cell = tableView.dequeueReusableCell(withIdentifier: "addImagesTableViewCell", for: indexPath) as? AddImagesTableViewCell {
                 cell.delegate = self
                 cell.cellImagesTagged = self.newData?.profilePictures ?? []
+                cell.imageView?.contentMode = .scaleAspectFit
+                return cell
+            }
+        } else if indexPath.row == ProfileFields.snapchatLoginManager.rawValue {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "AddSnapchatTableViewCell", for: indexPath) as? AddSnapchatTableViewCell {
+                cell.delegate = self
+                cell.avatarView.image = self.avatarImage
                 return cell
             }
         }
@@ -206,6 +224,10 @@ extension ProfileUpdateViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == ProfileFields.imagesField.rawValue {
             return 300
+        }
+        
+        if indexPath.row == ProfileFields.snapchatLoginManager.rawValue {
+            return 100
         }
         
         return 70
@@ -271,7 +293,7 @@ extension ProfileUpdateViewController: singleButtonFooterViewDelegate {
         originalUserProfile?.firstName = newData?.firstName
         originalUserProfile?.lastName = newData?.lastName
         originalUserProfile?.genderIdentity = GenderIdentity(rawValue: (newData?.genderIdentity)!)
-        originalUserProfile?.genderPreference = GenderPreference(rawValue:  (newData?.genderPreferences)!)
+        originalUserProfile?.genderPreference = GenderPreference(rawValue: (newData?.genderPreferences)!)
         originalUserProfile?.description = newData?.description ?? ""
         
         guard let uid = Auth.auth().currentUser?.uid else {
@@ -388,5 +410,44 @@ extension ProfileUpdateViewController: GenderPrefSelectionViewControllerDelegate
         self.newData?.genderPreferences = gender
         let indexPath = IndexPath(row: ProfileFields.genderPreferences.rawValue, section: 0)
         tableView.reloadRows(at: [indexPath], with: .fade)
+    }
+}
+
+extension ProfileUpdateViewController: addSnapchatTableViewCellDelegate {
+    func disconnectedSnapchat() {
+        print("Disconnected Snapchat")
+    }
+    
+    func connectSnapchat() {
+        if SCSDKLoginClient.isUserLoggedIn == false {
+            SCSDKLoginClient.login(from: self) { (success: Bool, error: Error?) in
+                self.tableView.reloadData()
+            }
+        } else {
+            SnapchatServices.shared.getUpdatedBitmojiAvatarURL { url in
+                guard let currentUser = FirebaseServices.shared.getCurrentUserProfile() else {
+                    return
+                }
+                
+                guard let url = url else {
+                    return
+                }
+
+                Utils.loadImage(url: url) { image in
+                    guard let image = image else {
+                        return
+                    }
+
+                    FirebaseServices.shared.updateAvatarImage(_withUID: currentUser.id, avatarIMG: image) { errorStatus in
+                        guard errorStatus != nil else {
+                            self.showErrorMessage(message: "")
+                            return
+                        }
+                        
+                        self.showOkMessage(title: "Success", message: "Updated Avatar") {}
+                    }
+                }
+            }
+        }
     }
 }
