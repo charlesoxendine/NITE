@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>itms-apps</string>
+        <string>bitmoji-sdk</string>
+        <string>snapchat</string>
+    </array>
+    <key>SCSDKScopes</key>
+    <array>
+        <string>https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar</string>
+        <string>https://auth.snapchat.com/oauth2/api/user.display_name</string>
+    </array>
+    <key>SCSDKRedirectUrl</key>
+    <string>NITE://snap-kit/oauth2</string>
+    <key>SCSDKClientId</key>
+    <string>6e5663d1-e124-43f9-8d0f-e1921ef43d36</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>NITE</string>
+            </array>
+        </dict>
+    </array>
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key>
+        <false/>
+        <key>UISceneConfigurations</key>
+        <dict>
+            <key>UIWindowSceneSessionRoleApplication</key>
+            <array>
+                <dict>
+                    <key>UISceneConfigurationName</key>
+                    <string>Default Configuration</string>
+                    <key>UISceneDelegateClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+                    <key>UISceneStoryboardFile</key>
+                    <string>Auth</string>
+                </dict>
+            </array>
+        </dict>
+    </dict>
+</dict>
+</plist>
+

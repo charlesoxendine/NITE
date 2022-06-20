@@ -32,7 +32,6 @@
 		9F6281B628053E6F00E40316 /* CardViewServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281B528053E6F00E40316 /* CardViewServices.swift */; };
 		9F840FB32854F58200005C00 /* AddSnapchatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F840FB12854F58200005C00 /* AddSnapchatTableViewCell.swift */; };
 		9F840FB42854F58200005C00 /* AddSnapchatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F840FB22854F58200005C00 /* AddSnapchatTableViewCell.xib */; };
-		9F840FB628564CF100005C00 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F840FB528564CF100005C00 /* Info.plist */; };
 		9F84228A282C221600A8D454 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F842289282C221600A8D454 /* SignInViewController.swift */; };
 		9F84228C282D6FBD00A8D454 /* MatchNotifViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F84228B282D6FBD00A8D454 /* MatchNotifViewController.swift */; };
 		9F842295282DEEC700A8D454 /* SBUChannelListViewController+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F842294282DEEC700A8D454 /* SBUChannelListViewController+EXT.swift */; };
@@ -52,6 +51,7 @@
 		9F86D7B0280BE9DD0092E98B /* GenderIdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D7AF280BE9DD0092E98B /* GenderIdentityViewController.swift */; };
 		9F86D7B2280BE9F00092E98B /* Utility.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F86D7B1280BE9F00092E98B /* Utility.storyboard */; };
 		9F86D7B4280D3FE80092E98B /* AvatarServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D7B3280D3FE80092E98B /* AvatarServices.swift */; };
+		9F963A33286001EC00C5EDF7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FA4F1C3285FFE6B0086D3D0 /* Info.plist */; };
 		9F98343828513C5F00A01D3F /* IAPservices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F98343728513C5F00A01D3F /* IAPservices.swift */; };
 		9F98343B28517AB400A01D3F /* couple_bench.json in Resources */ = {isa = PBXBuildFile; fileRef = 9F98343A28517AB400A01D3F /* couple_bench.json */; };
 		9F98343D28522B8000A01D3F /* pinky_love.json in Resources */ = {isa = PBXBuildFile; fileRef = 9F98343C28522B8000A01D3F /* pinky_love.json */; };
@@ -118,7 +118,6 @@
 		9F6281B528053E6F00E40316 /* CardViewServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewServices.swift; sourceTree = "<group>"; };
 		9F840FB12854F58200005C00 /* AddSnapchatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSnapchatTableViewCell.swift; sourceTree = "<group>"; };
 		9F840FB22854F58200005C00 /* AddSnapchatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSnapchatTableViewCell.xib; sourceTree = "<group>"; };
-		9F840FB528564CF100005C00 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F842289282C221600A8D454 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		9F84228B282D6FBD00A8D454 /* MatchNotifViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchNotifViewController.swift; sourceTree = "<group>"; };
 		9F842294282DEEC700A8D454 /* SBUChannelListViewController+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SBUChannelListViewController+EXT.swift"; sourceTree = "<group>"; };
@@ -143,6 +142,7 @@
 		9F98343C28522B8000A01D3F /* pinky_love.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = pinky_love.json; path = ../../../../Downloads/pinky_love.json; sourceTree = "<group>"; };
 		9FA4703E283BBD13005968E5 /* UserDescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDescriptionTableViewCell.swift; sourceTree = "<group>"; };
 		9FA4703F283BBD13005968E5 /* UserDescriptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserDescriptionTableViewCell.xib; sourceTree = "<group>"; };
+		9FA4F1C3285FFE6B0086D3D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FDFA1952832CC1700F519C7 /* SendbirdServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendbirdServices.swift; sourceTree = "<group>"; };
 		9FE4D673280A588900C0E9D3 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		9FE4D675280B300A00C0E9D3 /* UIColor+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+EXT.swift"; sourceTree = "<group>"; };
@@ -198,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				9F6281722805289300E40316 /* NITE */,
+				9FA4F1C3285FFE6B0086D3D0 /* Info.plist */,
 				9F6281892805289700E40316 /* NITETests */,
 				9F6281932805289700E40316 /* NITEUITests */,
 				9F6281712805289300E40316 /* Products */,
@@ -227,7 +228,6 @@
 				9F6281A42805294A00E40316 /* Storyboards */,
 				9F6281A32805293200E40316 /* View Controllers */,
 				9FE4D677280B323000C0E9D3 /* views */,
-				9F840FB528564CF100005C00 /* Info.plist */,
 			);
 			path = NITE;
 			sourceTree = "<group>";
@@ -518,7 +518,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F840FB628564CF100005C00 /* Info.plist in Resources */,
+				9F963A33286001EC00C5EDF7 /* Info.plist in Resources */,
 				9F98343D28522B8000A01D3F /* pinky_love.json in Resources */,
 				9F86D7AA280BE5B20092E98B /* imageCollectionViewCell.xib in Resources */,
 				9F98343B28517AB400A01D3F /* couple_bench.json in Resources */,
