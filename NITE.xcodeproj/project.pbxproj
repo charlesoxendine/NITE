@@ -27,9 +27,9 @@
 		9F6281A9280533B700E40316 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281A8280533B700E40316 /* Utils.swift */; };
 		9F6281AB2805340300E40316 /* UIViewController+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281AA2805340200E40316 /* UIViewController+EXT.swift */; };
 		9F6281AD280534BB00E40316 /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F6281AC280534BB00E40316 /* Auth.storyboard */; };
-		9F6281B12805350900E40316 /* AuthSplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281B02805350900E40316 /* AuthSplashScreenViewController.swift */; };
 		9F6281B3280535E900E40316 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F6281B2280535E900E40316 /* GoogleService-Info.plist */; };
 		9F6281B628053E6F00E40316 /* CardViewServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281B528053E6F00E40316 /* CardViewServices.swift */; };
+		9F7A49772860CFA0008AE250 /* AuthSplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6281B02805350900E40316 /* AuthSplashScreenViewController.swift */; };
 		9F840FB32854F58200005C00 /* AddSnapchatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F840FB12854F58200005C00 /* AddSnapchatTableViewCell.swift */; };
 		9F840FB42854F58200005C00 /* AddSnapchatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F840FB22854F58200005C00 /* AddSnapchatTableViewCell.xib */; };
 		9F84228A282C221600A8D454 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F842289282C221600A8D454 /* SignInViewController.swift */; };
@@ -51,7 +51,6 @@
 		9F86D7B0280BE9DD0092E98B /* GenderIdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D7AF280BE9DD0092E98B /* GenderIdentityViewController.swift */; };
 		9F86D7B2280BE9F00092E98B /* Utility.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F86D7B1280BE9F00092E98B /* Utility.storyboard */; };
 		9F86D7B4280D3FE80092E98B /* AvatarServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F86D7B3280D3FE80092E98B /* AvatarServices.swift */; };
-		9F963A33286001EC00C5EDF7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FA4F1C3285FFE6B0086D3D0 /* Info.plist */; };
 		9F98343828513C5F00A01D3F /* IAPservices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F98343728513C5F00A01D3F /* IAPservices.swift */; };
 		9F98343B28517AB400A01D3F /* couple_bench.json in Resources */ = {isa = PBXBuildFile; fileRef = 9F98343A28517AB400A01D3F /* couple_bench.json */; };
 		9F98343D28522B8000A01D3F /* pinky_love.json in Resources */ = {isa = PBXBuildFile; fileRef = 9F98343C28522B8000A01D3F /* pinky_love.json */; };
@@ -518,7 +517,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F963A33286001EC00C5EDF7 /* Info.plist in Resources */,
 				9F98343D28522B8000A01D3F /* pinky_love.json in Resources */,
 				9F86D7AA280BE5B20092E98B /* imageCollectionViewCell.xib in Resources */,
 				9F98343B28517AB400A01D3F /* couple_bench.json in Resources */,
@@ -687,6 +685,7 @@
 				9F4B49C52839164D0059195A /* ChannelListVC.swift in Sources */,
 				9F86D7AB280BE5B20092E98B /* ImageCollectionViewCell.swift in Sources */,
 				9F842299282E0CFF00A8D454 /* SBUChannelViewController+EXT.swift in Sources */,
+				9F7A49772860CFA0008AE250 /* AuthSplashScreenViewController.swift in Sources */,
 				9F842295282DEEC700A8D454 /* SBUChannelListViewController+EXT.swift in Sources */,
 				9F4B49C728393F3C0059195A /* UserProfileViewController.swift in Sources */,
 				9F840FB32854F58200005C00 /* AddSnapchatTableViewCell.swift in Sources */,
@@ -712,7 +711,6 @@
 				9F84228A282C221600A8D454 /* SignInViewController.swift in Sources */,
 				9F86D7A2280BD5170092E98B /* ProfileUpdateViewController.swift in Sources */,
 				9F86D79B280BB9040092E98B /* FieldEntryTableViewCell.swift in Sources */,
-				9F6281B12805350900E40316 /* AuthSplashScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -819,10 +817,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_FILE = NITE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = NITE;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -874,9 +874,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_FILE = NITE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = NITE;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -890,6 +892,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -899,9 +902,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Auth;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -924,6 +927,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -933,9 +937,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Auth;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (

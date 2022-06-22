@@ -17,7 +17,7 @@ class SnapchatServices {
         let userDataQuery = builder.build()*/
         
         SCSDKLoginClient.fetchUserData(withQuery: "{me{displayName, bitmoji{avatar}}}", variables: nil) { userInfo in
-            guard let bitmojiURLString = ((((userInfo?["data"] as? [String: Any])?["me"]) as? [String:Any])?["bitmoji"] as? [String: Any])?["avatar"] as? String else {
+            guard let bitmojiURLString = ((((userInfo?["data"] as? [String: Any])?["me"]) as? [String: Any])?["bitmoji"] as? [String: Any])?["avatar"] as? String else {
                 return
             }
             
@@ -27,7 +27,6 @@ class SnapchatServices {
             
             completion(bitmojiURL)
         } failure: { error, _ in
-            
             print("Error: \(error?.localizedDescription ?? "")")
         }
 

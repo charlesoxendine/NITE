@@ -39,13 +39,12 @@ class SendbirdServices {
         }
     }
     
-    func getMemberList(channelURL: String, completion: @escaping (ErrorStatus?, [SendbirdMemberObject]?) -> ()) {
+    func getMemberList(channelURL: String, completion: @escaping (ErrorStatus?, [SendbirdMemberObject]?) -> Void) {
         guard let url = URL(string: "https://api-\(sendBirdAppID).sendbird.com/v3/group_channels/\(channelURL)/members")
         else {
             return
         }
-        
-        
+                
         let headers: HTTPHeaders = [
             "Api-Token": sendBirdMasterToken,
             "Content-Type": "application/json; charset=utf8"
@@ -62,4 +61,3 @@ class SendbirdServices {
         }
     }
 }
-
