@@ -77,11 +77,6 @@
                             <constraint firstItem="jvj-yY-HXq" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" constant="-80" id="bv4-GE-L56"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="jvj-yY-HXq" secondAttribute="trailing" constant="25" id="zx3-vh-pN1"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="jvj-yY-HXq"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="lDf-q0-7AL"/>
                     <connections>
@@ -173,7 +168,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="wg9-9l-gqR"/>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="ifi-GB-0M7"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bft-Z4-lXS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -208,7 +203,6 @@
                                         </state>
                                         <connections>
                                             <action selector="cancelButtonTapped:" destination="h0F-3m-xEk" eventType="touchUpInside" id="Exw-Fi-kkX"/>
-                                            <action selector="cancelTapped:" destination="h0F-3m-xEk" eventType="touchUpInside" id="sEK-sI-dWw"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -251,9 +245,6 @@
             <point key="canvasLocation" x="1829" y="-380"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="jvj-yY-HXq"/>
-    </designables>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
