@@ -501,7 +501,7 @@ class FirebaseServices {
             genderPreferenceIdentities = [.male, .female, .other]
         }
         
-        let query = USER_COLLECTION.whereField("id", isNotEqualTo: uid).whereField("genderIdentity", in: genderPreferenceIdentities.map { $0.rawValue })
+        let query = USER_COLLECTION.whereField("genderIdentity", in: genderPreferenceIdentities.map { $0.rawValue }).whereField("avatarImageLocation", isNotEqualTo: NSNull())
         
         query.getDocuments { snap, error in
             if let error = error {

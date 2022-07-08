@@ -198,6 +198,11 @@ extension SignUpViewController: UITextFieldDelegate {
 }
 
 extension SignUpViewController: singleButtonFooterViewDelegate {
+    func termsTapped() {
+        if let url = URL(string: "https://sites.google.com/view/nite-terms-of-service/home"), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
     
     func didTapButton() {
         self.view.endEditing(true)

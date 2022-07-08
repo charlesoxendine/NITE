@@ -9,17 +9,25 @@ import UIKit
 
 protocol singleButtonFooterViewDelegate {
     func didTapButton()
+    func termsTapped()
 }
 
 class SingleButtonFooterView: UIView {
 
     @IBOutlet weak var mainButton: UIButton!
+    @IBOutlet weak var termsButton: UIButton!
     
     var delegate: singleButtonFooterViewDelegate?
     var customTitle: String? {
         didSet {
             mainButton.setTitle(customTitle, for: .normal)
             mainButton.backgroundColor = .red
+        }
+    }
+    
+    var hideTermsButton: Bool = false {
+        didSet {
+            self.termsButton.isHidden = hideTermsButton
         }
     }
     
@@ -37,5 +45,9 @@ class SingleButtonFooterView: UIView {
 
     @IBAction func buttonTapped(_ sender: Any) {
         delegate?.didTapButton()
+    }
+    
+    @IBAction func termsOfServiceTapped(_ sender: Any) {
+        delegate?.termsTapped()
     }
 }

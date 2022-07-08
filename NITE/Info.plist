@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>NITE</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms-apps</string>
+		<string>bitmoji-sdk</string>
+		<string>snapchat</string>
+	</array>
+	<key>SCSDKClientId</key>
+	<string>6e5663d1-e124-43f9-8d0f-e1921ef43d36</string>
+	<key>SCSDKRedirectUrl</key>
+	<string>NITE://snap-kit/oauth2</string>
+	<key>SCSDKScopes</key>
+	<array>
+		<string>https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar</string>
+		<string>https://auth.snapchat.com/oauth2/api/user.display_name</string>
+	</array>
+</dict>
 </plist>

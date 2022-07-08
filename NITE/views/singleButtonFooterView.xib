@@ -16,7 +16,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SingleButtonFooterView" customModule="NITE" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="130"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RtU-o1-B0M">
@@ -30,20 +30,34 @@
                         <action selector="buttonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="FBp-tb-3uk"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eOo-Aa-cFv">
+                    <rect key="frame" x="140.5" y="80" width="133" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="U5O-0p-VPh"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Terms of Service"/>
+                    <connections>
+                        <action selector="termsOfServiceTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="Op7-Xu-OyH"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="eOo-Aa-cFv" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="QVc-Eu-ubK"/>
                 <constraint firstItem="RtU-o1-B0M" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="aZV-4c-ARx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="eOo-Aa-cFv" secondAttribute="bottom" constant="10" id="gSU-WR-fh4"/>
                 <constraint firstItem="RtU-o1-B0M" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="jXF-7C-NGe"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="RtU-o1-B0M" secondAttribute="trailing" constant="20" id="lYR-Hh-B0T"/>
-                <constraint firstAttribute="bottom" secondItem="RtU-o1-B0M" secondAttribute="bottom" constant="15" id="pdo-4Y-dvF"/>
+                <constraint firstItem="eOo-Aa-cFv" firstAttribute="top" secondItem="RtU-o1-B0M" secondAttribute="bottom" constant="20" id="zj3-Ky-gVo"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="mainButton" destination="RtU-o1-B0M" id="inf-Wh-8ek"/>
+                <outlet property="termsButton" destination="eOo-Aa-cFv" id="gw3-Dp-b6F"/>
             </connections>
-            <point key="canvasLocation" x="5.7971014492753632" y="-201.5625"/>
+            <point key="canvasLocation" x="5.7971014492753632" y="-181.47321428571428"/>
         </view>
     </objects>
     <resources>
