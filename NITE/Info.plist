@@ -19,6 +19,8 @@
 		<string>bitmoji-sdk</string>
 		<string>snapchat</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription </key>
+	<string>In order to add photos to your profile </string>
 	<key>SCSDKClientId</key>
 	<string>6e5663d1-e124-43f9-8d0f-e1921ef43d36</string>
 	<key>SCSDKRedirectUrl</key>
