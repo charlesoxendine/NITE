@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>In order to set your profile images and prove your identity</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>LSApplicationQueriesSchemes</key>
